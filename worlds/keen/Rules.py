@@ -1,0 +1,221 @@
+from worlds.generic.Rules import set_rule
+
+# --------------------------------------------------
+# Create location rules
+# --------------------------------------------------
+
+# rule builder helper
+def set_location_rule(world, player, location_name, level_name,
+                      gems=None,
+                      requires_pogo=False,
+                      keycard=False):
+
+    def rule(state):
+        if not state.has(level_name, player):
+            return False
+        if requires_pogo and not state.has("Pogo Stick", player):
+            return False
+        if keycard and not state.has(f"{level_name} - Keycard", player):
+            return False
+        if gems:
+            has_all_gems = all(state.has(f"{level_name} - {gem}", player) for gem in gems)
+            return has_all_gems or state.has(f"{level_name} Gemset", player)
+        return True
+
+    set_rule(world.get_location(location_name, player), rule)
+
+def create_ck_rules(self):
+    
+    world = self.multiworld
+    player = self.player
+    ep = self.options.episode_select.value
+
+    # Keen 4 Rules
+    if ep in [0, 1]:
+        set_location_rule(world, player, "Border Village Complete", "Border Village")
+        set_location_rule(world, player, "Slug Village Complete", "Slug Village")
+        set_location_rule(world, player, "The Perilous Pit Complete", "The Perilous Pit",
+                          ["Red Gem", "Blue Gem"])
+        set_location_rule(world, player, "The Perilous Pit - Red Gem", "The Perilous Pit")
+        set_location_rule(world, player, "The Perilous Pit - Blue Gem", "The Perilous Pit")
+        set_location_rule(world, player, "Cave of the Descendents Complete", "Cave of the Descendents",
+                          ["Red Gem", "Yellow Gem"], requires_pogo=True)
+        set_location_rule(world, player, "Cave of the Descendents - Red Gem", "Cave of the Descendents")
+        set_location_rule(world, player, "Cave of the Descendents - Yellow Gem", "Cave of the Descendents",
+                          ["Red Gem"])
+        set_location_rule(world, player, "Chasm of Chills Complete", "Chasm of Chills")
+        set_location_rule(world, player, "Crystalus Complete", "Crystalus",
+                          ["Red Gem", "Yellow Gem", "Blue Gem", "Green Gem"], requires_pogo=True)
+        set_location_rule(world, player, "Crystalus - Green Gem", "Crystalus", requires_pogo=True)
+        set_location_rule(world, player, "Crystalus - Yellow Gem", "Crystalus",
+                          ["Green Gem"], requires_pogo=True)
+        set_location_rule(world, player, "Crystalus - Red Gem", "Crystalus",
+                          ["Green Gem", "Yellow Gem"], requires_pogo=True)
+        set_location_rule(world, player, "Crystalus - Blue Gem", "Crystalus",
+                          ["Green Gem", "Yellow Gem", "Red Gem"], requires_pogo=True)
+        set_location_rule(world, player, "Hilville Complete", "Hilville")
+        set_location_rule(world, player, "Sand Yego Complete", "Sand Yego",
+                          ["Green Gem"], requires_pogo=True)
+        set_location_rule(world, player, "Sand Yego - Green Gem", "Sand Yego", requires_pogo=True)
+        set_location_rule(world, player, "Miragia Complete", "Miragia", requires_pogo=True)
+        set_location_rule(world, player, "Lifewater Oasis Complete", "Lifewater Oasis", ["Green Gem"])
+        set_location_rule(world, player, "Lifewater Oasis - Green Gem", "Lifewater Oasis")
+        set_location_rule(world, player, "Pyramid of the Moons Complete", "Pyramid of the Moons",
+                          ["Yellow Gem"])
+        set_location_rule(world, player, "Pyramid of the Moons - Yellow Gem", "Pyramid of the Moons")
+        set_location_rule(world, player, "Pyramid of Shadows Complete", "Pyramid of Shadows",["Blue Gem"])
+        set_location_rule(world, player, "Pyramid of Shadows - Blue Gem", "Pyramid of Shadows")
+        set_location_rule(world, player, "Pyramid of the Gnosticine Ancients Complete",
+                          "Pyramid of the Gnosticine Ancients", ["Red Gem", "Green Gem"])
+        set_location_rule(world, player, "Pyramid of the Gnosticine Ancients - Red Gem",
+                          "Pyramid of the Gnosticine Ancients")
+        set_location_rule(world, player, "Pyramid of the Gnosticine Ancients - Green Gem",
+                          "Pyramid of the Gnosticine Ancients", ["Red Gem"])
+        set_location_rule(world, player, "Isle of Tar Complete", "Isle of Tar",
+                          ["Red Gem", "Yellow Gem", "Blue Gem"])
+        set_location_rule(world, player, "Isle of Tar - Red Gem", "Isle of Tar")
+        set_location_rule(world, player, "Isle of Tar - Yellow Gem", "Isle of Tar", ["Red Gem"])
+        set_location_rule(world, player, "Isle of Tar - Blue Gem", "Isle of Tar", ["Red Gem", "Yellow Gem"])
+        set_location_rule(world, player, "Isle of Fire Complete", "Isle of Fire",
+                          ["Yellow Gem", "Blue Gem"])
+        set_location_rule(world, player, "Isle of Fire - Yellow Gem", "Isle of Fire")
+        set_location_rule(world, player, "Isle of Fire - Blue Gem", "Isle of Fire", ["Yellow Gem"])
+        set_location_rule(world, player, "Well of Wishes Complete", "Well of Wishes")
+
+        #BWBM Complete
+        set_rule(
+            world.get_location("Bean-With-Bacon Megarocket Complete", player),
+            lambda state:
+                state.can_reach("Border Village Complete", "Location", player) and
+                state.can_reach("Slug Village Complete", "Location",  player) and
+                state.can_reach("The Perilous Pit Complete", "Location",  player) and    
+                state.can_reach("Cave of the Descendents Complete", "Location",  player) and 
+                state.can_reach("Chasm of Chills Complete", "Location",  player) and
+                state.can_reach("Crystalus Complete", "Location",  player) and
+                state.can_reach("Hilville Complete", "Location",  player) and
+                state.can_reach("Sand Yego Complete", "Location",  player) and
+                state.can_reach("Miragia Complete", "Location",  player) and
+                state.can_reach("Lifewater Oasis Complete", "Location",  player) and
+                state.can_reach("Pyramid of the Moons Complete", "Location",  player) and
+                state.can_reach("Pyramid of Shadows Complete", "Location",  player) and
+                state.can_reach("Pyramid of the Gnosticine Ancients Complete", "Location",  player) and
+                state.can_reach("Isle of Tar Complete", "Location",  player) and
+                state.can_reach("Isle of Fire Complete", "Location",  player) and
+                state.can_reach("Well of Wishes Complete", "Location",  player)
+        )
+
+    # Keen 5 Rules
+    if ep in [0, 2]:
+        set_location_rule(world, player, "Ion Ventilation System Complete", "Ion Ventilation System")
+        set_location_rule(world, player, "Security Center Complete", "Security Center",
+                          ["Red Gem", "Blue Gem"], keycard=True)
+        set_location_rule(world, player, "Security Center - Red Gem", "Security Center")
+        set_location_rule(world, player, "Security Center - Blue Gem", "Security Center", ["Red Gem"])
+        set_location_rule(world, player, "Security Center - Keycard", "Security Center",
+                          ["Red Gem", "Blue Gem"])
+        set_location_rule(world, player, "Defense Tunnel Vlook Complete", "Defense Tunnel Vlook",
+                          ["Red Gem", "Yellow Gem"], keycard=True)
+        set_location_rule(world, player, "Defense Tunnel Vlook - Red Gem", "Defense Tunnel Vlook")
+        set_location_rule(world, player, "Defense Tunnel Vlook - Yellow Gem", "Defense Tunnel Vlook",
+                          ["Red Gem"])
+        set_location_rule(world, player, "Defense Tunnel Vlook - Keycard", "Defense Tunnel Vlook")
+        set_location_rule(world, player, "Defense Tunnel Burrh Complete", "Defense Tunnel Burrh",
+                          ["Red Gem", "Yellow Gem", "Blue Gem", "Green Gem"], keycard=True)
+        set_location_rule(world, player, "Defense Tunnel Burrh - Red Gem", "Defense Tunnel Burrh")
+        set_location_rule(world, player, "Defense Tunnel Burrh - Yellow Gem", "Defense Tunnel Burrh")
+        set_location_rule(world, player, "Defense Tunnel Burrh - Blue Gem", "Defense Tunnel Burrh",
+                          ["Red Gem", "Yellow Gem"])
+        set_location_rule(world, player, "Defense Tunnel Burrh - Green Gem", "Defense Tunnel Burrh",
+                          ["Red Gem", "Yellow Gem", "Blue Gem"])
+        set_location_rule(world, player, "Defense Tunnel Burrh - Keycard", "Defense Tunnel Burrh",
+                          ["Red Gem", "Yellow Gem", "Blue Gem", "Green Gem"])
+        set_location_rule(world, player, "Defense Tunnel Sorra Complete", "Defense Tunnel Sorra",
+                          ["Yellow Gem"], keycard=True)
+        set_location_rule(world, player, "Defense Tunnel Sorra - Yellow Gem", "Defense Tunnel Sorra")
+        set_location_rule(world, player, "Defense Tunnel Sorra - Keycard", "Defense Tunnel Sorra")
+        set_location_rule(world, player, "Defense Tunnel Teln Complete", "Defense Tunnel Teln",
+                    ["Red Gem", "Yellow Gem", "Blue Gem", "Green Gem"], keycard=True)
+        set_location_rule(world, player, "Defense Tunnel Teln - Red Gem", "Defense Tunnel Teln")
+        set_location_rule(world, player, "Defense Tunnel Teln - Yellow Gem", "Defense Tunnel Teln",
+                          ["Red Gem"])
+        set_location_rule(world, player, "Defense Tunnel Teln - Blue Gem", "Defense Tunnel Teln",
+                          ["Red Gem", "Yellow Gem"])
+        set_location_rule(world, player, "Defense Tunnel Teln - Green Gem", "Defense Tunnel Teln",
+                          ["Red Gem", "Yellow Gem"])
+        set_location_rule(world, player, "Defense Tunnel Teln - Keycard", "Defense Tunnel Teln",
+                          ["Red Gem", "Yellow Gem", "Green Gem"])
+        set_location_rule(world, player, "Energy Flow Systems Complete", "Energy Flow Systems",
+                          ["Red Gem", "Yellow Gem", "Blue Gem", "Green Gem"])
+        set_location_rule(world, player, "Energy Flow Systems - Red Gem", "Energy Flow Systems")
+        set_location_rule(world, player, "Energy Flow Systems - Yellow Gem", "Energy Flow Systems",
+                          ["Red Gem"])
+        set_location_rule(world, player, "Energy Flow Systems - Blue Gem", "Energy Flow Systems",
+                          ["Red Gem", "Yellow Gem"])
+        set_location_rule(world, player, "Energy Flow Systems - Green Gem", "Energy Flow Systems",
+                          ["Red Gem", "Yellow Gem", "Blue Gem"])
+        set_location_rule(world, player, "Regulation Control Center Complete", "Regulation Control Center",
+                          ["Red Gem", "Yellow Gem", "Blue Gem"])
+        set_location_rule(world, player, "Regulation Control Center - Red Gem", "Regulation Control Center")
+        set_location_rule(world, player, "Regulation Control Center - Yellow Gem",
+                          "Regulation Control Center", ["Red Gem"])
+        set_location_rule(world, player, "Regulation Control Center - Blue Gem",
+                          "Regulation Control Center", ["Red Gem", "Yellow Gem"])
+        set_location_rule(world, player, "Neutrino Burst Injector Complete", "Neutrino Burst Injector",
+                          ["Red Gem", "Blue Gem"])
+        set_location_rule(world, player, "Neutrino Burst Injector - Red Gem", "Neutrino Burst Injector")
+        set_location_rule(world, player, "Neutrino Burst Injector - Blue Gem", "Neutrino Burst Injector")
+        set_location_rule(world, player, "Brownian Motion Inducer Complete", "Brownian Motion Inducer",
+                          ["Yellow Gem", "Blue Gem"])
+        set_location_rule(world, player, "Brownian Motion Inducer - Yellow Gem", "Brownian Motion Inducer")
+        set_location_rule(world, player, "Brownian Motion Inducer - Blue Gem", "Brownian Motion Inducer")
+        set_location_rule(world, player, "Gravitational Damping Hub Complete", "Gravitational Damping Hub",
+                          ["Red Gem", "Green Gem"], keycard=True)
+        set_location_rule(world, player, "Gravitational Damping Hub - Red Gem", "Gravitational Damping Hub",
+                          ["Green Gem"])
+        set_location_rule(world, player, "Gravitational Damping Hub - Green Gem", "Gravitational Damping Hub")
+        set_location_rule(world, player, "Gravitational Damping Hub - Keycard", "Gravitational Damping Hub")
+        set_location_rule(world, player, "Quantum Explosion Dynamo Complete", "Quantum Explosion Dynamo",
+                          ["Red Gem", "Yellow Gem", "Blue Gem", "Green Gem"])
+        set_location_rule(world, player, "Quantum Explosion Dynamo - Red Gem","Quantum Explosion Dynamo")
+        set_location_rule(world, player, "Quantum Explosion Dynamo - Yellow Gem", "Quantum Explosion Dynamo")
+        set_location_rule(world, player, "Quantum Explosion Dynamo - Blue Gem", "Quantum Explosion Dynamo")
+        set_location_rule(world, player, "Quantum Explosion Dynamo - Green Gem", "Quantum Explosion Dynamo")
+
+        # QED Rule
+        set_rule(
+            world.get_location("Quantum Explosion Dynamo Complete", player),
+            lambda state:
+                state.has("Quantum Explosion Dynamo", player) and
+                (
+                    (
+                        state.has("Quantum Explosion Dynamo - Red Gem", player) and
+                        state.has("Quantum Explosion Dynamo - Yellow Gem", player) and
+                        state.has("Quantum Explosion Dynamo - Blue Gem", player) and
+                        state.has("Quantum Explosion Dynamo - Green Gem", player)
+                    ) or
+                    state.has("Quantum Explosion Dynamo Gemset", player)
+                ) and
+                state.can_reach("Ion Ventilation System Complete", "Location", player) and
+                state.can_reach("Security Center Complete", "Location", player) and
+                state.can_reach("Defense Tunnel Vlook Complete", "Location", player) and
+                state.can_reach("Defense Tunnel Burrh Complete", "Location", player) and
+                state.can_reach("Defense Tunnel Sorra Complete", "Location", player) and
+                state.can_reach("Defense Tunnel Teln Complete", "Location", player) and
+                state.can_reach("Energy Flow Systems Complete", "Location", player) and
+                state.can_reach("Regulation Control Center Complete", "Location", player) and
+                state.can_reach("Neutrino Burst Injector Complete", "Location", player) and
+                state.can_reach("Brownian Motion Inducer Complete", "Location", player) and
+                state.can_reach("Gravitational Damping Hub Complete", "Location", player)
+        )
+        
+    # Victory condition
+    if ep == 1:
+        self.multiworld.completion_condition[player] = \
+            lambda state: state.has("Keen 4 Complete", player)
+    elif ep == 2:
+        self.multiworld.completion_condition[player] = \
+            lambda state: state.has("Keen 5 Complete", player)
+    elif ep == 0:
+        self.multiworld.completion_condition[player] = \
+            lambda state: state.has("Keen 4 Complete", player) and state.has("Keen 5 Complete", player)
+        
