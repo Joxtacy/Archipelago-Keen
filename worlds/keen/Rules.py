@@ -39,20 +39,20 @@ def create_ck_rules(self):
         set_location_rule(world, player, "The Perilous Pit - Red Gem", "The Perilous Pit")
         set_location_rule(world, player, "The Perilous Pit - Blue Gem", "The Perilous Pit")
         set_location_rule(world, player, "Cave of the Descendents Complete", "Cave of the Descendents",
-                          ["Red Gem", "Yellow Gem"], requires_pogo=True)
+                          ["Yellow Gem"], requires_pogo=True)
         set_location_rule(world, player, "Cave of the Descendents - Red Gem", "Cave of the Descendents")
         set_location_rule(world, player, "Cave of the Descendents - Yellow Gem", "Cave of the Descendents",
                           ["Red Gem"])
         set_location_rule(world, player, "Chasm of Chills Complete", "Chasm of Chills")
         set_location_rule(world, player, "Crystalus Complete", "Crystalus",
-                          ["Red Gem", "Yellow Gem", "Blue Gem", "Green Gem"], requires_pogo=True)
+                          ["Blue Gem"])
         set_location_rule(world, player, "Crystalus - Green Gem", "Crystalus", requires_pogo=True)
         set_location_rule(world, player, "Crystalus - Yellow Gem", "Crystalus",
                           ["Green Gem"], requires_pogo=True)
         set_location_rule(world, player, "Crystalus - Red Gem", "Crystalus",
-                          ["Green Gem", "Yellow Gem"], requires_pogo=True)
+                          ["Yellow Gem"], requires_pogo=True)
         set_location_rule(world, player, "Crystalus - Blue Gem", "Crystalus",
-                          ["Green Gem", "Yellow Gem", "Red Gem"], requires_pogo=True)
+                          ["Red Gem"], requires_pogo=True)
         set_location_rule(world, player, "Hilville Complete", "Hilville")
         set_location_rule(world, player, "Sand Yego Complete", "Sand Yego",
                           ["Green Gem"], requires_pogo=True)
@@ -66,16 +66,16 @@ def create_ck_rules(self):
         set_location_rule(world, player, "Pyramid of Shadows Complete", "Pyramid of Shadows",["Blue Gem"])
         set_location_rule(world, player, "Pyramid of Shadows - Blue Gem", "Pyramid of Shadows")
         set_location_rule(world, player, "Pyramid of the Gnosticine Ancients Complete",
-                          "Pyramid of the Gnosticine Ancients", ["Red Gem", "Green Gem"])
+                          "Pyramid of the Gnosticine Ancients", ["Red Gem", "Green Gem"], requires_pogo=True)
         set_location_rule(world, player, "Pyramid of the Gnosticine Ancients - Red Gem",
                           "Pyramid of the Gnosticine Ancients")
         set_location_rule(world, player, "Pyramid of the Gnosticine Ancients - Green Gem",
-                          "Pyramid of the Gnosticine Ancients", ["Red Gem"])
+                          "Pyramid of the Gnosticine Ancients", ["Red Gem"], requires_pogo=True)
         set_location_rule(world, player, "Isle of Tar Complete", "Isle of Tar",
-                          ["Red Gem", "Yellow Gem", "Blue Gem"])
-        set_location_rule(world, player, "Isle of Tar - Red Gem", "Isle of Tar")
+                          ["Blue Gem"], requires_pogo=True)
+        set_location_rule(world, player, "Isle of Tar - Red Gem", "Isle of Tar", requires_pogo=True)
         set_location_rule(world, player, "Isle of Tar - Yellow Gem", "Isle of Tar", ["Red Gem"])
-        set_location_rule(world, player, "Isle of Tar - Blue Gem", "Isle of Tar", ["Red Gem", "Yellow Gem"])
+        set_location_rule(world, player, "Isle of Tar - Blue Gem", "Isle of Tar", ["Yellow Gem"])
         set_location_rule(world, player, "Isle of Fire Complete", "Isle of Fire",
                           ["Yellow Gem", "Blue Gem"])
         set_location_rule(world, player, "Isle of Fire - Yellow Gem", "Isle of Fire")
@@ -108,78 +108,88 @@ def create_ck_rules(self):
     if ep in [0, 2]:
         set_location_rule(world, player, "Ion Ventilation System Complete", "Ion Ventilation System")
         set_location_rule(world, player, "Security Center Complete", "Security Center",
-                          ["Red Gem", "Blue Gem"], keycard=True)
+                          ["Blue Gem"], keycard=True)
         set_location_rule(world, player, "Security Center - Red Gem", "Security Center")
         set_location_rule(world, player, "Security Center - Blue Gem", "Security Center", ["Red Gem"])
         set_location_rule(world, player, "Security Center - Keycard", "Security Center",
-                          ["Red Gem", "Blue Gem"])
+                          ["Blue Gem"])
         set_location_rule(world, player, "Defense Tunnel Vlook Complete", "Defense Tunnel Vlook",
-                          ["Red Gem", "Yellow Gem"], keycard=True)
+                          ["Yellow Gem"], keycard=True)
         set_location_rule(world, player, "Defense Tunnel Vlook - Red Gem", "Defense Tunnel Vlook")
         set_location_rule(world, player, "Defense Tunnel Vlook - Yellow Gem", "Defense Tunnel Vlook",
                           ["Red Gem"])
         set_location_rule(world, player, "Defense Tunnel Vlook - Keycard", "Defense Tunnel Vlook")
         set_location_rule(world, player, "Defense Tunnel Burrh Complete", "Defense Tunnel Burrh",
-                          ["Red Gem", "Yellow Gem", "Blue Gem", "Green Gem"], keycard=True)
+                          ["Red Gem"], keycard=True)
         set_location_rule(world, player, "Defense Tunnel Burrh - Red Gem", "Defense Tunnel Burrh")
         set_location_rule(world, player, "Defense Tunnel Burrh - Yellow Gem", "Defense Tunnel Burrh")
         set_location_rule(world, player, "Defense Tunnel Burrh - Blue Gem", "Defense Tunnel Burrh",
                           ["Red Gem", "Yellow Gem"])
         set_location_rule(world, player, "Defense Tunnel Burrh - Green Gem", "Defense Tunnel Burrh",
-                          ["Red Gem", "Yellow Gem", "Blue Gem"])
+                          ["Red Gem", "Blue Gem"])
         set_location_rule(world, player, "Defense Tunnel Burrh - Keycard", "Defense Tunnel Burrh",
-                          ["Red Gem", "Yellow Gem", "Blue Gem", "Green Gem"])
+                          ["Red Gem", "Green Gem"])
         set_location_rule(world, player, "Defense Tunnel Sorra Complete", "Defense Tunnel Sorra",
                           ["Yellow Gem"], keycard=True)
-        set_location_rule(world, player, "Defense Tunnel Sorra - Yellow Gem", "Defense Tunnel Sorra")
+        set_location_rule(world, player, "Defense Tunnel Sorra - Yellow Gem", "Defense Tunnel Sorra",
+                          requires_pogo=True)
         set_location_rule(world, player, "Defense Tunnel Sorra - Keycard", "Defense Tunnel Sorra")
         set_location_rule(world, player, "Defense Tunnel Teln Complete", "Defense Tunnel Teln",
-                    ["Red Gem", "Yellow Gem", "Blue Gem", "Green Gem"], keycard=True)
+                          ["Yellow Gem", "Blue Gem"], keycard=True)
         set_location_rule(world, player, "Defense Tunnel Teln - Red Gem", "Defense Tunnel Teln")
         set_location_rule(world, player, "Defense Tunnel Teln - Yellow Gem", "Defense Tunnel Teln",
                           ["Red Gem"])
         set_location_rule(world, player, "Defense Tunnel Teln - Blue Gem", "Defense Tunnel Teln",
-                          ["Red Gem", "Yellow Gem"])
+                          ["Yellow Gem"])
         set_location_rule(world, player, "Defense Tunnel Teln - Green Gem", "Defense Tunnel Teln",
-                          ["Red Gem", "Yellow Gem"])
+                          ["Yellow Gem"])
         set_location_rule(world, player, "Defense Tunnel Teln - Keycard", "Defense Tunnel Teln",
-                          ["Red Gem", "Yellow Gem", "Green Gem"])
+                          ["Yellow Gem", "Green Gem"])
         set_location_rule(world, player, "Energy Flow Systems Complete", "Energy Flow Systems",
-                          ["Red Gem", "Yellow Gem", "Blue Gem", "Green Gem"])
+                          ["Green Gem"], requires_pogo=True)
         set_location_rule(world, player, "Energy Flow Systems - Red Gem", "Energy Flow Systems")
         set_location_rule(world, player, "Energy Flow Systems - Yellow Gem", "Energy Flow Systems",
                           ["Red Gem"])
         set_location_rule(world, player, "Energy Flow Systems - Blue Gem", "Energy Flow Systems",
-                          ["Red Gem", "Yellow Gem"])
+                          ["Yellow Gem"])
         set_location_rule(world, player, "Energy Flow Systems - Green Gem", "Energy Flow Systems",
-                          ["Red Gem", "Yellow Gem", "Blue Gem"])
+                          ["Blue Gem"])
         set_location_rule(world, player, "Regulation Control Center Complete", "Regulation Control Center",
-                          ["Red Gem", "Yellow Gem", "Blue Gem"])
+                          ["Red Gem", "Yellow Gem", "Blue Gem"], requires_pogo=True)
         set_location_rule(world, player, "Regulation Control Center - Red Gem", "Regulation Control Center")
         set_location_rule(world, player, "Regulation Control Center - Yellow Gem",
-                          "Regulation Control Center", ["Red Gem"])
+                          "Regulation Control Center", ["Red Gem"], requires_pogo=True)
         set_location_rule(world, player, "Regulation Control Center - Blue Gem",
-                          "Regulation Control Center", ["Red Gem", "Yellow Gem"])
+                          "Regulation Control Center", ["Red Gem", "Yellow Gem"], requires_pogo=True)
         set_location_rule(world, player, "Neutrino Burst Injector Complete", "Neutrino Burst Injector",
-                          ["Red Gem", "Blue Gem"])
+                          ["Red Gem", "Blue Gem"], requires_pogo=True)
         set_location_rule(world, player, "Neutrino Burst Injector - Red Gem", "Neutrino Burst Injector")
-        set_location_rule(world, player, "Neutrino Burst Injector - Blue Gem", "Neutrino Burst Injector")
+        set_location_rule(world, player, "Neutrino Burst Injector - Blue Gem", "Neutrino Burst Injector",
+                          requires_pogo=True)
         set_location_rule(world, player, "Brownian Motion Inducer Complete", "Brownian Motion Inducer",
-                          ["Yellow Gem", "Blue Gem"])
-        set_location_rule(world, player, "Brownian Motion Inducer - Yellow Gem", "Brownian Motion Inducer")
-        set_location_rule(world, player, "Brownian Motion Inducer - Blue Gem", "Brownian Motion Inducer")
+                          ["Yellow Gem", "Blue Gem"], requires_pogo=True)
+        set_location_rule(world, player, "Brownian Motion Inducer - Yellow Gem", "Brownian Motion Inducer",
+                          requires_pogo=True)
+        set_location_rule(world, player, "Brownian Motion Inducer - Blue Gem", "Brownian Motion Inducer",
+                          requires_pogo=True)
         set_location_rule(world, player, "Gravitational Damping Hub Complete", "Gravitational Damping Hub",
-                          ["Red Gem", "Green Gem"], keycard=True)
+                          ["Green Gem"], keycard=True, requires_pogo=True)
         set_location_rule(world, player, "Gravitational Damping Hub - Red Gem", "Gravitational Damping Hub",
-                          ["Green Gem"])
-        set_location_rule(world, player, "Gravitational Damping Hub - Green Gem", "Gravitational Damping Hub")
-        set_location_rule(world, player, "Gravitational Damping Hub - Keycard", "Gravitational Damping Hub")
+                          ["Green Gem"], requires_pogo=True)
+        set_location_rule(world, player, "Gravitational Damping Hub - Green Gem", "Gravitational Damping Hub",
+                          requires_pogo=True)
+        set_location_rule(world, player, "Gravitational Damping Hub - Keycard", "Gravitational Damping Hub",
+                          requires_pogo=True)
         set_location_rule(world, player, "Quantum Explosion Dynamo Complete", "Quantum Explosion Dynamo",
-                          ["Red Gem", "Yellow Gem", "Blue Gem", "Green Gem"])
-        set_location_rule(world, player, "Quantum Explosion Dynamo - Red Gem","Quantum Explosion Dynamo")
-        set_location_rule(world, player, "Quantum Explosion Dynamo - Yellow Gem", "Quantum Explosion Dynamo")
-        set_location_rule(world, player, "Quantum Explosion Dynamo - Blue Gem", "Quantum Explosion Dynamo")
-        set_location_rule(world, player, "Quantum Explosion Dynamo - Green Gem", "Quantum Explosion Dynamo")
+                          ["Red Gem", "Yellow Gem", "Blue Gem", "Green Gem"], requires_pogo=True)
+        set_location_rule(world, player, "Quantum Explosion Dynamo - Red Gem","Quantum Explosion Dynamo",
+                          requires_pogo=True)
+        set_location_rule(world, player, "Quantum Explosion Dynamo - Yellow Gem", "Quantum Explosion Dynamo",
+                          requires_pogo=True)
+        set_location_rule(world, player, "Quantum Explosion Dynamo - Blue Gem", "Quantum Explosion Dynamo",
+                          requires_pogo=True)
+        set_location_rule(world, player, "Quantum Explosion Dynamo - Green Gem", "Quantum Explosion Dynamo",
+                          requires_pogo=True)
 
         # QED Rule
         set_rule(
