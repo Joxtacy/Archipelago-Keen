@@ -1,4 +1,4 @@
-from BaseClasses import Region, Entrance, Location, MultiWorld, ItemClassification
+from BaseClasses import Region, Entrance, Location, MultiWorld, ItemClassification, Item
 from worlds.AutoWorld import World, WebWorld
 from worlds.generic.Rules import set_rule
 import logging
@@ -40,6 +40,24 @@ class KeenWorld(World):
         else:
             create_ck4_regions(self)
             create_ck5_regions(self)
+
+        if ep in [0, 1]:
+            bwbm = self.multiworld.get_location("Bean-With-Bacon Megarocket Complete", self.player)
+            bwbm_event = Location(self.player, "Keen 4 Victory", None, bwbm.parent_region)
+            bwbm_event.place_locked_item(
+                Item("Keen 4 Complete", ItemClassification.progression, None, self.player))
+            bwbm.parent_region.locations.append(bwbm_event)
+            set_rule(bwbm_event, lambda state:
+                     state.can_reach("Bean-With-Bacon Megarocket Complete", "Location", self.player))
+        
+        if ep in [0, 2]:
+            qed = self.multiworld.get_location("Quantum Explosion Dynamo Complete", self.player)
+            qed_event = Location(self.player, "Keen 5 Victory", None, qed.parent_region)
+            qed_event.place_locked_item(
+                Item("Keen 5 Complete", ItemClassification.progression, None, self.player))
+            qed.parent_region.locations.append(qed_event)
+            set_rule(qed_event, lambda state:
+                     state.can_reach("Quantum Explosion Dynamo Complete", "Location", self.player))
 
     # --------------------------------------------------
     # Determine starting inventory

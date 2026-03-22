@@ -221,12 +221,11 @@ def create_ck_rules(self):
     # Victory condition
     if ep == 1:
         self.multiworld.completion_condition[player] = \
-            lambda state: state.can_reach("Bean-With-Bacon Megarocket Complete", "Location", player)
+            lambda state: state.has("Keen 4 Complete", player)
     elif ep == 2:
         self.multiworld.completion_condition[player] = \
-            lambda state: state.can_reach("Quantum Explosion Dynamo Complete", "Location", player)
+            lambda state: state.has("Keen 5 Complete", player)
     elif ep == 0:
         self.multiworld.completion_condition[player] = \
-            lambda state: \
-                state.can_reach("Bean-With-Bacon Megarocket Complete", "Location", player) and \
-                state.can_reach("Quantum Explosion Dynamo Complete", "Location", player)
+            lambda state: state.has("Keen 4 Complete", player) and \
+                        state.has("Keen 5 Complete", player)
