@@ -41,14 +41,6 @@ class KeenWorld(World):
             create_ck4_regions(self)
             create_ck5_regions(self)
 
-        if ep in [0, 1]:
-            self.multiworld.get_location("Bean-With-Bacon Megarocket Complete", self.player) \
-                .place_locked_item(Items.KeenItem("Keen 4 Complete", ItemClassification.progression, 19999, self.player))
-        
-        if ep in [0, 2]:
-            self.multiworld.get_location("Quantum Explosion Dynamo Complete", self.player) \
-                .place_locked_item(Items.KeenItem("Keen 5 Complete", ItemClassification.progression, 29999, self.player))
-
     # --------------------------------------------------
     # Determine starting inventory
     # --------------------------------------------------

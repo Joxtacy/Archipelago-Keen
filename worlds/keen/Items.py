@@ -25,11 +25,6 @@ ck_filler_items = [
     ItemDef("Stunner Ammo", ItemClassification.filler, 901),
 ]
 
-ck_victory_items = [
-    ItemDef("Keen 4 Complete", ItemClassification.progression, 19999),
-    ItemDef("Keen 5 Complete", ItemClassification.progression, 29999),
-]
-
 ck4_unique_items = [
     ItemDef("Wetsuit", ItemClassification.progression, 103),
 ]
@@ -174,7 +169,6 @@ ck5_gemset_items = [
 ck_all_items = (
     ck_common_items
     + ck_filler_items
-    + ck_victory_items
     + ck4_unique_items
     + ck4_level_items
     + ck4_gem_items
