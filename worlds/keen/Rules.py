@@ -110,7 +110,7 @@ def create_ck_rules(self):
         set_location_rule(world, player, "Security Center Complete", "Security Center",
                           ["Blue Gem"], keycard=True)
         set_location_rule(world, player, "Security Center - Red Gem", "Security Center")
-        set_location_rule(world, player, "Security Center - Blue Gem", "Security Center", ["Red Gem"])
+        set_location_rule(world, player, "Security Center - Blue Gem", "Security Center", ["Red Gem"], requires_pogo=True)
         set_location_rule(world, player, "Security Center - Keycard", "Security Center",
                           ["Blue Gem"])
         set_location_rule(world, player, "Defense Tunnel Vlook Complete", "Defense Tunnel Vlook",
