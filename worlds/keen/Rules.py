@@ -86,6 +86,7 @@ def create_ck_rules(self):
         set_rule(
             world.get_location("Bean-With-Bacon Megarocket Complete", player),
             lambda state:
+                state.has("Bean-With-Bacon Megarocket", player) and
                 state.can_reach("Border Village Complete", "Location", player) and
                 state.can_reach("Slug Village Complete", "Location",  player) and
                 state.can_reach("The Perilous Pit Complete", "Location",  player) and    
