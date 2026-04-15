@@ -186,4 +186,5 @@ class KeenWorld(World):
     def fill_slot_data(self) -> dict:
         return {
             "episode_select": self.options.episode_select.value,
+            "enable_gemsets": self.options.enable_gemsets.value,
         }
