@@ -1,4 +1,3 @@
-# Locations.py
 from BaseClasses import Location
 
 class KeenLocation(Location):
@@ -81,7 +80,7 @@ def loc_keygem(ep, lvl, gem):
     )
 
 def loc_keycard(ep, lvl):
-    return(
+    return (
         AP_LOC_BASE_KEYCARD
         + (ep * AP_LOC_EPISODE_STRIDE)
         + (lvl * AP_LOC_LEVEL_STRIDE)

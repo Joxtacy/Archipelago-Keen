@@ -1,5 +1,4 @@
-# Regions.py
-from BaseClasses import Region, Entrance, Location, MultiWorld
+from BaseClasses import Region
 from .Locations import ck4_locations_by_region, ck5_locations_by_region, KeenLocation
 
 # --------------------------------------------------

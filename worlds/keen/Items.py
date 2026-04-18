@@ -1,4 +1,3 @@
-# Items.py
 from BaseClasses import Item, ItemClassification
 from dataclasses import dataclass
 

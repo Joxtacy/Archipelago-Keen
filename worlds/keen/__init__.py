@@ -1,11 +1,16 @@
-from BaseClasses import Region, Entrance, Location, MultiWorld, ItemClassification, Item
-from worlds.AutoWorld import World, WebWorld
+from BaseClasses import Region, Location, ItemClassification, Item
+from worlds.AutoWorld import World
 from worlds.generic.Rules import set_rule
 import logging
 from dataclasses import dataclass
 
-from . import Items
-from .Locations import location_table, KeenLocation
+from .Items import (
+    KeenItem, item_name_to_id, create_item as keen_create_item,
+    ck_common_items, ck4_level_items, ck4_unique_items,
+    ck4_gem_items, ck4_gemset_items, ck5_level_items, ck5_keycard_items,
+    ck5_gem_items, ck5_gemset_items
+)
+from .Locations import location_table
 from .Options import KeenOptions
 from .Regions import create_ck4_regions, create_ck5_regions
 from .Rules import create_ck_rules
@@ -15,12 +20,12 @@ class KeenWorld(World):
     options_dataclass = KeenOptions
 
     location_name_to_id = location_table
-    item_name_to_id = Items.item_name_to_id
+    item_name_to_id = item_name_to_id
 
     origin_region_name = "Menu"
 
-    def create_item(self, name: str) -> Items.KeenItem:
-        return Items.create_item(name, self.player)
+    def create_item(self, name: str) -> KeenItem:
+        return keen_create_item(name, self.player)
 
     # --------------------------------------------------
     # Create regions + locations
@@ -131,7 +136,7 @@ class KeenWorld(World):
         # Push all starting items
         for item in self.starting_items:
             self.multiworld.push_precollected(
-                Items.create_item(item, self.player)
+                keen_create_item(item, self.player)
             )
 
     # --------------------------------------------------
@@ -144,29 +149,29 @@ class KeenWorld(World):
 
         pool = []
 
-        pool += Items.ck_common_items
+        pool += ck_common_items
 
         if ep in [0, 1]:
-            pool += Items.ck4_level_items
-            pool += Items.ck4_unique_items
-            pool += Items.ck4_gemset_items if gemsets else Items.ck4_gem_items
+            pool += ck4_level_items
+            pool += ck4_unique_items
+            pool += ck4_gemset_items if gemsets else ck4_gem_items
 
         if ep in [0, 2]:
-            pool += Items.ck5_level_items
-            pool += Items.ck5_keycard_items
-            pool += Items.ck5_gemset_items if gemsets else Items.ck5_gem_items
+            pool += ck5_level_items
+            pool += ck5_keycard_items
+            pool += ck5_gemset_items if gemsets else ck5_gem_items
 
         pool = [i for i in pool if i.name not in self.starting_items]
 
         for item_def in pool:
             self.multiworld.itempool.append(
-                Items.create_item(item_def.name, self.player)
+                keen_create_item(item_def.name, self.player)
             )
 
         # Calculate filler needed
         location_count = len(self.multiworld.get_unfilled_locations(self.player))
         item_count = len([i for i in self.multiworld.itempool if i.player == self.player])
-        filler_count = location_count - item_count
+        filler_count = max(0, location_count - item_count)
 
         # Add weighted filler
         for _ in range(filler_count):

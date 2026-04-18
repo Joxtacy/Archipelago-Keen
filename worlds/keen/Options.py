@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from Options import Choice, OptionGroup, PerGameCommonOptions, Range, Toggle
+from Options import PerGameCommonOptions, Choice, Range, Toggle
 
 class EpisodeSelect(Choice):
     """
@@ -30,7 +30,8 @@ class AdditionalStartingLevels(Range):
     """
     How many additional levels should be randomly unlocked at the start of the game.
     By default, Border Village and Slug Village in Keen 4 and Ion Ventilation System and
-    Security Center in Keen 5 are always unlocked.
+    Security Center in Keen 5 are always unlocked. Additionally, the gems and keycards
+    needed to complete these levels are also unlocked from the start.
     """
     display_name = "Additional Starting Levels"
 
@@ -39,15 +40,17 @@ class AdditionalStartingLevels(Range):
     
     default = 3
 
-class EnablePointsanity(Toggle):
-    """
-    Whether to enable pointsanity.
-    Adds a number of checks to each level at various point threshholds.
-    *NOT YET IMPLEMENTED*
-    """
-    display_name = "Enable Pointsanity"
+# Leaving out for now - will return if/when pointsanity is implemented
 
-    default = 0
+#class EnablePointsanity(Toggle):
+#    """
+#    Whether to enable pointsanity.
+#    Adds a number of checks to each level at various point threshholds.
+#    *NOT YET IMPLEMENTED*
+#    """
+#   display_name = "Enable Pointsanity"
+#
+#    default = 0
 
 class RandomizePogo(Choice):
     """
@@ -99,7 +102,7 @@ class KeenOptions(PerGameCommonOptions):
     episode_select: EpisodeSelect
     enable_gemsets: EnableGemsets
     additional_starting_levels: AdditionalStartingLevels
-    enable_pointsanity: EnablePointsanity
+    # enable_pointsanity: EnablePointsanity
     randomize_pogo: RandomizePogo
     randomize_stunner: RandomizeStunner
     randomize_wetsuit: RandomizeWetsuit
