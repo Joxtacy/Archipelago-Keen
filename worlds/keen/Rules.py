@@ -409,33 +409,6 @@ def create_ck_rules(self):
         set_location_rule(world, player, "Quantum Explosion Dynamo - Green Gem", "Quantum Explosion Dynamo",
                           requires=("pogo",))
 
-        # QED Rule
-        set_rule(
-            world.get_location("Quantum Explosion Dynamo Complete", player),
-            lambda state:
-                state.has("Quantum Explosion Dynamo", player) and
-                (
-                    (
-                        state.has("Quantum Explosion Dynamo - Red Gem", player) and
-                        state.has("Quantum Explosion Dynamo - Yellow Gem", player) and
-                        state.has("Quantum Explosion Dynamo - Blue Gem", player) and
-                        state.has("Quantum Explosion Dynamo - Green Gem", player)
-                    ) or
-                    state.has("Quantum Explosion Dynamo Gemset", player)
-                ) and
-                state.can_reach("Ion Ventilation System Complete", "Location", player) and
-                state.can_reach("Security Center Complete", "Location", player) and
-                state.can_reach("Defense Tunnel Vlook Complete", "Location", player) and
-                state.can_reach("Defense Tunnel Burrh Complete", "Location", player) and
-                state.can_reach("Defense Tunnel Sorra Complete", "Location", player) and
-                state.can_reach("Defense Tunnel Teln Complete", "Location", player) and
-                state.can_reach("Energy Flow Systems Complete", "Location", player) and
-                state.can_reach("Regulation Control Center Complete", "Location", player) and
-                state.can_reach("Neutrino Burst Injector Complete", "Location", player) and
-                state.can_reach("Brownian Motion Inducer Complete", "Location", player) and
-                state.can_reach("Gravitational Damping Hub Complete", "Location", player)
-        )
-        
     # Score-item access rules (kegs + flasks).
     # Default rule: player must be able to enter the level. Per-pickup
     # refinements live in ck4_flask_rules / ck5_keg_rules below and are
