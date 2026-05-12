@@ -1,3 +1,11 @@
+# Archipelago-Keen
+
+This repository is a continuation fork of [kodbyte/Archipelago-Keen](https://github.com/kodbyte/Archipelago-Keen) (archived), itself a fork of Archipelago with Commander Keen support added under `worlds/keen/`. Active development continues here on the `keen-ap` branch. The game-side client lives at [Joxtacy/omnispeak-ap](https://github.com/Joxtacy/omnispeak-ap).
+
+The remainder of this README is the upstream Archipelago project README.
+
+---
+
 # [Archipelago](https://archipelago.gg) ![Discord Shield](https://discordapp.com/api/guilds/731205301247803413/widget.png?style=shield) | [Install](https://github.com/ArchipelagoMW/Archipelago/releases)
 
 Archipelago provides a generic framework for developing multiworld capability for game randomizers. In all cases,
