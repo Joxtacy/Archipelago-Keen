@@ -1,0 +1,110 @@
+name: Release apworld
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version (e.g. 0.0.5)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate version format
+        run: |
+          if ! echo "${{ inputs.version }}" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "::error::Version must be in semver format (e.g. 0.0.5)"
+            exit 1
+          fi
+
+      - name: Check tag does not already exist
+        run: |
+          if git rev-parse "v${{ inputs.version }}" >/dev/null 2>&1; then
+            echo "::error::Tag v${{ inputs.version }} already exists"
+            exit 1
+          fi
+
+      - name: Generate changelog (worlds/keen only)
+        id: changelog
+        run: |
+          # Only commits touching worlds/keen — the rest of the repo is
+          # upstream Archipelago and not part of this apworld release.
+          PREV_TAG=$(git describe --tags --abbrev=0 --match='v*' 2>/dev/null || echo "")
+          if [ -z "$PREV_TAG" ]; then
+            LOG=$(git log --pretty=format:"- %s" -- worlds/keen)
+          else
+            LOG=$(git log --pretty=format:"- %s" "${PREV_TAG}..HEAD" -- worlds/keen)
+          fi
+          {
+            echo "changelog<<EOF"
+            echo "$LOG"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          check-latest: true
+
+      - name: Install Archipelago dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python ModuleUpdate.py --yes --force --append "WebHostLib/requirements.txt"
+          python Launcher.py --update_settings
+
+      - name: Generate template YAML
+        run: |
+          python -c "
+          import os
+          from Options import generate_yaml_templates
+          target = os.path.join('Players', 'Templates')
+          os.makedirs(target, exist_ok=True)
+          generate_yaml_templates(target, False)
+          "
+          # kodbyte's releases ship it as Commander.Keen.yaml (dots, not spaces).
+          # Archipelago generates 'Commander Keen.yaml' by default; rename for parity.
+          cp "Players/Templates/Commander Keen.yaml" Commander.Keen.yaml
+
+      - name: Build keen.apworld
+        run: |
+          (cd worlds && \
+            zip -r ../keen.apworld keen \
+              -x 'keen/__pycache__/*' 'keen/**/__pycache__/*' 'keen/*.pyc' 'keen/**/*.pyc')
+
+      - name: Tag and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag "v${{ inputs.version }}"
+          git push origin "v${{ inputs.version }}"
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "v${{ inputs.version }}"
+          name: "v${{ inputs.version }}"
+          body: |
+            ## Changelog
+
+            ${{ steps.changelog.outputs.changelog }}
+
+            [About this implementation](https://github.com/${{ github.repository }}/blob/keen-ap/worlds/keen/docs/en_Keen.md)
+            [Setup Guide](https://github.com/${{ github.repository }}/blob/keen-ap/worlds/keen/docs/setup_en.md)
+            [Latest omnispeak-ap release](https://github.com/Joxtacy/omnispeak-ap/releases/latest)
+          files: |
+            keen.apworld
+            Commander.Keen.yaml
