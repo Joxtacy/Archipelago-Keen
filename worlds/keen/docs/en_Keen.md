@@ -27,6 +27,8 @@ In episode 5, the goal is to finish the canonical final level, "Quantum Explosio
 * Enable Gemsets: You can opt to receive all keygems for a level at once instead of individually. This reduces the number of times you have to enter a level.
 * Additional Starting Levels: You will always start with Border Village and Slug Village in episode 4 and Ion Ventilation System and Security Center in episode 4. You can select to start with 3 to 10 additional levels chosen at random.
 * Enable Pointsanity: Once implemented, whether to play with pointsanity checks or not.
+* Enable Flasksanity: Turns every reachable Lifewater Flask (Keen 4 extra-life pickup) into its own AP location. Unreachable flasks are excluded automatically.
+* Enable Kegsanity: Turns every Vitalin Keg (Keen 5 extra-life pickup) into its own AP location.
 * Randomize Stunner/Pogo/Wetsuit: For each item you can select whether to start with it, have it placed early in the seed, or to completely randomize it.
 
 ## What changes have been made from the vanilla game?

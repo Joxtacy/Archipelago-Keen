@@ -1,5 +1,9 @@
 from BaseClasses import Region
-from .Locations import ck4_locations_by_region, ck5_locations_by_region, KeenLocation
+from .Locations import (
+    ck4_locations_by_region, ck5_locations_by_region,
+    ck4_flask_locations_by_region, ck5_keg_locations_by_region,
+    KeenLocation,
+)
 
 # --------------------------------------------------
 # Create regions
@@ -85,10 +89,17 @@ def attach_locations(world, region_name):
     player = world.player
     region = mw.get_region(region_name, player)
 
-    locations = (
-        ck4_locations_by_region.get(region_name, {}) or
-        ck5_locations_by_region.get(region_name, {})
-    )
+    locations = {}
+    locations.update(ck4_locations_by_region.get(region_name, {}))
+    locations.update(ck5_locations_by_region.get(region_name, {}))
+
+    # Kegsanity = CK5 Vitalin Kegs only (extra-life centilives in CK5).
+    if world.options.enable_kegsanity:
+        locations.update(ck5_keg_locations_by_region.get(region_name, {}))
+
+    # Flasksanity = CK4 Lifewater Flasks only (extra-life centilives in CK4).
+    if world.options.enable_flasksanity:
+        locations.update(ck4_flask_locations_by_region.get(region_name, {}))
 
     for loc_name, loc_id in locations.items():
         region.locations.append(

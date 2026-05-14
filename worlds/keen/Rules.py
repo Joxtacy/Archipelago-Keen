@@ -1,5 +1,10 @@
 from worlds.generic.Rules import set_rule
 
+from .Locations import (
+    ck4_flask_locations_by_region, ck5_keg_locations_by_region,
+    ck4_level_id_to_name, ck5_level_id_to_name,
+)
+
 # --------------------------------------------------
 # Create location rules
 # --------------------------------------------------
@@ -230,6 +235,32 @@ def create_ck_rules(self):
                 state.can_reach("Gravitational Damping Hub Complete", "Location", player)
         )
         
+    # Score-item access rules (kegs + flasks).
+    # Minimal rule: player must be able to enter the level. Per-pickup
+    # refinements (specific gems, pogo for unreachable areas) can be added
+    # once the spatial layout of each keg/flask is mapped out.
+    def _set_score_rules(locations_by_region, level_to_name):
+        for region_dict in locations_by_region.values():
+            for loc_name in region_dict:
+                # Location names are "<Level Name> - Keg N" / "Flask N".
+                # Derive level by matching against the level→name map.
+                level_name = None
+                for name in level_to_name.values():
+                    prefix = f"{name} - "
+                    if loc_name.startswith(prefix):
+                        level_name = name
+                        break
+                if level_name is None:
+                    continue
+                set_rule(world.get_location(loc_name, player),
+                         lambda state, ln=level_name: state.has(ln, player))
+
+    if ep in [0, 1] and self.options.enable_flasksanity:
+        _set_score_rules(ck4_flask_locations_by_region, ck4_level_id_to_name)
+
+    if ep in [0, 2] and self.options.enable_kegsanity:
+        _set_score_rules(ck5_keg_locations_by_region, ck5_level_id_to_name)
+
     # Victory condition
     if ep == 1:
         self.multiworld.completion_condition[player] = \

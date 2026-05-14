@@ -52,6 +52,29 @@ class AdditionalStartingLevels(Range):
 #
 #    default = 0
 
+class EnableFlasksanity(Toggle):
+    """
+    Whether to enable flasksanity (Keen 4 only).
+    With this option on, every accessible Lifewater Flask in Keen 4 becomes
+    its own AP location check. Lifewater Flasks are the extra-life pickups
+    (no points; every 100 collected grants an extra life). Flasks known to
+    be unreachable in the original maps are excluded automatically.
+    """
+    display_name = "Enable Flasksanity"
+
+    default = 0
+
+class EnableKegsanity(Toggle):
+    """
+    Whether to enable kegsanity (Keen 5 only).
+    With this option on, every Vitalin Keg in Keen 5 becomes its own AP
+    location check. Vitalin Kegs are the extra-life pickups (no points;
+    every 100 collected grants an extra life).
+    """
+    display_name = "Enable Kegsanity"
+
+    default = 0
+
 class RandomizePogo(Choice):
     """
     Whether the pogo stick should be randomized.
@@ -103,6 +126,8 @@ class KeenOptions(PerGameCommonOptions):
     enable_gemsets: EnableGemsets
     additional_starting_levels: AdditionalStartingLevels
     # enable_pointsanity: EnablePointsanity
+    enable_flasksanity: EnableFlasksanity
+    enable_kegsanity: EnableKegsanity
     randomize_pogo: RandomizePogo
     randomize_stunner: RandomizeStunner
     randomize_wetsuit: RandomizeWetsuit
