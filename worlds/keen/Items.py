@@ -16,7 +16,7 @@ class ItemDef:
 
 ck_common_items = [
     ItemDef("Pogo Stick", ItemClassification.progression, 101),
-    ItemDef("Neural Stunner", ItemClassification.useful, 102),
+    ItemDef("Neural Stunner", ItemClassification.progression, 102),
 ]
 
 ck_filler_items = [
