@@ -8,12 +8,20 @@ from worlds.generic.Rules import set_rule
 def set_location_rule(world, player, location_name, level_name,
                       gems=None,
                       requires_pogo=False,
+                      requires_stunner=False,
+                      requires_pogo_or_stunner=False,
                       keycard=False):
 
     def rule(state):
         if not state.has(level_name, player):
             return False
         if requires_pogo and not state.has("Pogo Stick", player):
+            return False
+        if requires_stunner and not state.has("Neural Stunner", player):
+            return False
+        if requires_pogo_or_stunner and not (
+            state.has("Pogo Stick", player) or state.has("Neural Stunner", player)
+        ):
             return False
         if keycard and not state.has(f"{level_name} - Keycard", player):
             return False
@@ -63,8 +71,10 @@ def create_ck_rules(self):
         set_location_rule(world, player, "Pyramid of the Moons Complete", "Pyramid of the Moons",
                           ["Yellow Gem"])
         set_location_rule(world, player, "Pyramid of the Moons - Yellow Gem", "Pyramid of the Moons")
-        set_location_rule(world, player, "Pyramid of Shadows Complete", "Pyramid of Shadows",["Blue Gem"])
-        set_location_rule(world, player, "Pyramid of Shadows - Blue Gem", "Pyramid of Shadows")
+        set_location_rule(world, player, "Pyramid of Shadows Complete", "Pyramid of Shadows",
+                          ["Blue Gem"], requires_stunner=True)
+        set_location_rule(world, player, "Pyramid of Shadows - Blue Gem", "Pyramid of Shadows",
+                          requires_stunner=True)
         set_location_rule(world, player, "Pyramid of the Gnosticine Ancients Complete",
                           "Pyramid of the Gnosticine Ancients", ["Red Gem", "Green Gem"], requires_pogo=True)
         set_location_rule(world, player, "Pyramid of the Gnosticine Ancients - Red Gem",
@@ -157,11 +167,12 @@ def create_ck_rules(self):
                           ["Blue Gem"])
         set_location_rule(world, player, "Regulation Control Center Complete", "Regulation Control Center",
                           ["Red Gem", "Yellow Gem", "Blue Gem"], requires_pogo=True)
-        set_location_rule(world, player, "Regulation Control Center - Red Gem", "Regulation Control Center")
+        set_location_rule(world, player, "Regulation Control Center - Red Gem", "Regulation Control Center",
+                          requires_stunner=True)
         set_location_rule(world, player, "Regulation Control Center - Yellow Gem",
-                          "Regulation Control Center", ["Red Gem"], requires_pogo=True)
+                          "Regulation Control Center", ["Red Gem"], requires_pogo_or_stunner=True)
         set_location_rule(world, player, "Regulation Control Center - Blue Gem",
-                          "Regulation Control Center", ["Red Gem", "Yellow Gem"], requires_pogo=True)
+                          "Regulation Control Center", ["Red Gem", "Yellow Gem"], requires_pogo_or_stunner=True)
         set_location_rule(world, player, "Neutrino Burst Injector Complete", "Neutrino Burst Injector",
                           ["Red Gem", "Blue Gem"], requires_pogo=True)
         set_location_rule(world, player, "Neutrino Burst Injector - Red Gem", "Neutrino Burst Injector")
