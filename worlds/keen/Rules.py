@@ -149,7 +149,8 @@ def create_ck_rules(self):
                           ["Yellow Gem"], keycard=True)
         set_location_rule(world, player, "Defense Tunnel Sorra - Yellow Gem", "Defense Tunnel Sorra",
                           requires_pogo=True)
-        set_location_rule(world, player, "Defense Tunnel Sorra - Keycard", "Defense Tunnel Sorra")
+        set_location_rule(world, player, "Defense Tunnel Sorra - Keycard", "Defense Tunnel Sorra",
+                          requires_stunner=True)
         set_location_rule(world, player, "Defense Tunnel Teln Complete", "Defense Tunnel Teln",
                           ["Yellow Gem", "Blue Gem"], keycard=True)
         set_location_rule(world, player, "Defense Tunnel Teln - Red Gem", "Defense Tunnel Teln")
