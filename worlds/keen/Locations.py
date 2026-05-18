@@ -255,9 +255,15 @@ ck5_extralife_counts = {
 #   level, unreachable due to a known level-design oversight.
 # - Cave of the Descendents: both flasks unreachable without cheating or
 #   dying through them (the KeenWiki notes flasks don't register on death).
+# - The Perilous Pit: both flasks unreachable in normal gameplay.
+# - Pyramid of the Gnosticine Ancients flask 0 (engine index): reachable in
+#   Apogee v1.0/v1.1 only. Omnispeak ships v1.4 data (see
+#   data/keen4/EPISODE.CK4 in the omnispeak fork), so it cannot be obtained.
 ck4_lifewater_flask_excluded = {
     (LEVEL_LO, 0), (LEVEL_LO, 1), (LEVEL_LO, 2), (LEVEL_LO, 3), (LEVEL_LO, 4),
     (LEVEL_COTD, 0), (LEVEL_COTD, 1),
+    (LEVEL_PP, 0), (LEVEL_PP, 1),
+    (LEVEL_POTGA, 0),
 }
 
 ck4_level_id_to_name = {

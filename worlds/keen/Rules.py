@@ -37,6 +37,71 @@ def set_location_rule(world, player, location_name, level_name,
 
     set_rule(world.get_location(location_name, player), rule)
 
+
+# Per-flask requirements beyond "have the level unlocked". Keyed by the
+# location name as built by _build_extralife_locations (1-based engine index,
+# skipping entries in ck4_lifewater_flask_excluded). Levels not listed here
+# inherit the default rule (level item only); wetsuit-gated levels (IoT, IoF,
+# WoW) are additionally gated by the K4 Lake region in Regions.py, so the
+# Wetsuit does not need to be repeated as a per-flask requirement.
+ck4_flask_rules = {
+    "Border Village - Lifewater Flask 1": dict(requires_pogo=True),
+    "Border Village - Lifewater Flask 2": dict(requires_pogo=True),
+    "Border Village - Lifewater Flask 3": dict(requires_pogo=True),
+    "Border Village - Lifewater Flask 4": dict(requires_pogo=True),
+    "Border Village - Lifewater Flask 5": dict(requires_pogo=True),
+    "Border Village - Lifewater Flask 6": dict(requires_pogo=True),
+    "Border Village - Lifewater Flask 7": dict(requires_pogo=True),
+    "Hilville - Lifewater Flask 1": dict(requires_pogo=True),
+    "Sand Yego - Lifewater Flask 1": dict(requires_pogo=True),
+    "Miragia - Lifewater Flask 1": dict(requires_pogo=True),
+    "Pyramid of the Moons - Lifewater Flask 1": dict(requires_pogo=True),
+    "Pyramid of Shadows - Lifewater Flask 1": dict(requires_pogo=True, requires_stunner=True),
+    "Pyramid of Shadows - Lifewater Flask 2": dict(requires_stunner=True),
+    "Pyramid of Shadows - Lifewater Flask 3": dict(requires_stunner=True),
+    "Pyramid of Shadows - Lifewater Flask 4": dict(requires_stunner=True),
+    "Pyramid of Shadows - Lifewater Flask 5": dict(requires_stunner=True),
+    "Pyramid of Shadows - Lifewater Flask 6": dict(requires_stunner=True),
+    "Pyramid of Shadows - Lifewater Flask 7": dict(requires_stunner=True),
+    "Pyramid of Shadows - Lifewater Flask 8": dict(requires_stunner=True),
+    "Pyramid of the Gnosticine Ancients - Lifewater Flask 2": dict(requires_stunner=True),
+    "Pyramid of the Gnosticine Ancients - Lifewater Flask 3": dict(requires_stunner=True),
+    "Pyramid of the Gnosticine Ancients - Lifewater Flask 4": dict(requires_pogo=True),
+    "Isle of Tar - Lifewater Flask 1": dict(requires_pogo=True),
+    "Isle of Tar - Lifewater Flask 2": dict(requires_pogo=True, gems=["Blue Gem"]),
+}
+
+
+# Per-keg requirements for CK5 Vitalin Kegs. Engine indices map to in-level
+# positions (recovered via OMNISPEAK_DUMP_SCORE_ITEMS=1):
+#   SC   Keg 1 (65,14) top-right; Keg 2 (4,33) far-left.
+#   DTV  Keg 1 (51,2) middle; Keg 2 (187,3) far-right.
+#   QED  Keg 1 (36,31) and Keg 2 (38,31) sit behind the same gate.
+# Levels not listed fall through to the default (level item only).
+ck5_keg_rules = {
+    "Ion Ventilation System - Vitalin Keg 1": dict(requires_pogo=True),
+    "Ion Ventilation System - Vitalin Keg 2": dict(requires_pogo=True),
+    "Ion Ventilation System - Vitalin Keg 3": dict(requires_pogo=True),
+    "Ion Ventilation System - Vitalin Keg 4": dict(requires_pogo=True),
+    "Ion Ventilation System - Vitalin Keg 5": dict(requires_pogo=True),
+    "Ion Ventilation System - Vitalin Keg 6": dict(requires_pogo=True),
+    "Ion Ventilation System - Vitalin Keg 7": dict(requires_pogo=True),
+    "Ion Ventilation System - Vitalin Keg 8": dict(requires_pogo=True),
+    "Ion Ventilation System - Vitalin Keg 9": dict(requires_pogo=True),
+    "Ion Ventilation System - Vitalin Keg 10": dict(requires_pogo=True),
+    "Security Center - Vitalin Keg 1": dict(gems=["Blue Gem"]),
+    "Defense Tunnel Vlook - Vitalin Keg 1": dict(gems=["Yellow Gem"], requires_pogo=True),
+    "Energy Flow Systems - Vitalin Keg 1": dict(gems=["Yellow Gem"]),
+    "Defense Tunnel Burrh - Vitalin Keg 1": dict(requires_pogo=True),
+    "Defense Tunnel Burrh - Vitalin Keg 2": dict(requires_pogo=True),
+    "Defense Tunnel Teln - Vitalin Keg 1": dict(gems=["Red Gem"]),
+    "Brownian Motion Inducer - Vitalin Keg 1": dict(requires_pogo=True),
+    "Gravitational Damping Hub - Vitalin Keg 1": dict(gems=["Green Gem"], requires_pogo=True),
+    "Quantum Explosion Dynamo - Vitalin Keg 1": dict(requires_pogo=True, requires_stunner=True),
+    "Quantum Explosion Dynamo - Vitalin Keg 2": dict(requires_pogo=True, requires_stunner=True),
+}
+
+
 def create_ck_rules(self):
     
     world = self.multiworld
@@ -237,10 +302,11 @@ def create_ck_rules(self):
         )
         
     # Score-item access rules (kegs + flasks).
-    # Minimal rule: player must be able to enter the level. Per-pickup
-    # refinements (specific gems, pogo for unreachable areas) can be added
-    # once the spatial layout of each keg/flask is mapped out.
-    def _set_score_rules(locations_by_region, level_to_name):
+    # Default rule: player must be able to enter the level. Per-pickup
+    # refinements live in ck4_flask_rules / ck5_keg_rules below and are
+    # merged in by location name.
+    def _set_score_rules(locations_by_region, level_to_name, overrides=None):
+        overrides = overrides or {}
         for region_dict in locations_by_region.values():
             for loc_name in region_dict:
                 # Location names are "<Level Name> - Keg N" / "Flask N".
@@ -253,14 +319,16 @@ def create_ck_rules(self):
                         break
                 if level_name is None:
                     continue
-                set_rule(world.get_location(loc_name, player),
-                         lambda state, ln=level_name: state.has(ln, player))
+                extra = overrides.get(loc_name, {})
+                set_location_rule(world, player, loc_name, level_name, **extra)
 
     if ep in [0, 1] and self.options.enable_flasksanity:
-        _set_score_rules(ck4_flask_locations_by_region, ck4_level_id_to_name)
+        _set_score_rules(ck4_flask_locations_by_region, ck4_level_id_to_name,
+                         ck4_flask_rules)
 
     if ep in [0, 2] and self.options.enable_kegsanity:
-        _set_score_rules(ck5_keg_locations_by_region, ck5_level_id_to_name)
+        _set_score_rules(ck5_keg_locations_by_region, ck5_level_id_to_name,
+                         ck5_keg_rules)
 
     # Victory condition
     if ep == 1:
