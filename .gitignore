@@ -198,3 +198,11 @@ _speedups.html
 .LSOverride
 Thumbs.db
 [Dd]esktop.ini
+
+# Omnispeak runtime artifacts (created if the engine is ever run from this
+# directory while developing the apworld; should never be checked in).
+OMNISPK.CFG
+CONFIG.CK[456]
+ap_log.txt
+ap_uuid.txt
+score_item_dump.txt
