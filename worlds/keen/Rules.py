@@ -10,24 +10,28 @@ from .Locations import (
 # --------------------------------------------------
 
 # rule builder helper
+# Maps each token used in set_location_rule(requires=...) to its AP item
+# name. Tokens may be combined with '|' for OR — e.g. requires=("pogo|stunner",)
+# means "pogo or stunner".
+_REQUIREMENT_ITEM = {
+    "pogo": "Pogo Stick",
+    "stunner": "Neural Stunner",
+    "wetsuit": "Wetsuit",
+}
+
+
 def set_location_rule(world, player, location_name, level_name,
                       gems=None,
-                      requires_pogo=False,
-                      requires_stunner=False,
-                      requires_pogo_or_stunner=False,
+                      requires=(),
                       keycard=False):
 
     def rule(state):
         if not state.has(level_name, player):
             return False
-        if requires_pogo and not state.has("Pogo Stick", player):
-            return False
-        if requires_stunner and not state.has("Neural Stunner", player):
-            return False
-        if requires_pogo_or_stunner and not (
-            state.has("Pogo Stick", player) or state.has("Neural Stunner", player)
-        ):
-            return False
+        for req in requires:
+            options = req.split("|")
+            if not any(state.has(_REQUIREMENT_ITEM[o], player) for o in options):
+                return False
         if keycard and not state.has(f"{level_name} - Keycard", player):
             return False
         if gems:
@@ -45,30 +49,30 @@ def set_location_rule(world, player, location_name, level_name,
 # WoW) are additionally gated by the K4 Lake region in Regions.py, so the
 # Wetsuit does not need to be repeated as a per-flask requirement.
 ck4_flask_rules = {
-    "Border Village - Lifewater Flask 1": dict(requires_pogo=True),
-    "Border Village - Lifewater Flask 2": dict(requires_pogo=True),
-    "Border Village - Lifewater Flask 3": dict(requires_pogo=True),
-    "Border Village - Lifewater Flask 4": dict(requires_pogo=True),
-    "Border Village - Lifewater Flask 5": dict(requires_pogo=True),
-    "Border Village - Lifewater Flask 6": dict(requires_pogo=True),
-    "Border Village - Lifewater Flask 7": dict(requires_pogo=True),
-    "Hilville - Lifewater Flask 1": dict(requires_pogo=True),
-    "Sand Yego - Lifewater Flask 1": dict(requires_pogo=True),
-    "Miragia - Lifewater Flask 1": dict(requires_pogo=True),
-    "Pyramid of the Moons - Lifewater Flask 1": dict(requires_pogo=True),
-    "Pyramid of Shadows - Lifewater Flask 1": dict(requires_pogo=True, requires_stunner=True),
-    "Pyramid of Shadows - Lifewater Flask 2": dict(requires_stunner=True),
-    "Pyramid of Shadows - Lifewater Flask 3": dict(requires_stunner=True),
-    "Pyramid of Shadows - Lifewater Flask 4": dict(requires_stunner=True),
-    "Pyramid of Shadows - Lifewater Flask 5": dict(requires_stunner=True),
-    "Pyramid of Shadows - Lifewater Flask 6": dict(requires_stunner=True),
-    "Pyramid of Shadows - Lifewater Flask 7": dict(requires_stunner=True),
-    "Pyramid of Shadows - Lifewater Flask 8": dict(requires_stunner=True),
-    "Pyramid of the Gnosticine Ancients - Lifewater Flask 2": dict(requires_stunner=True),
-    "Pyramid of the Gnosticine Ancients - Lifewater Flask 3": dict(requires_stunner=True),
-    "Pyramid of the Gnosticine Ancients - Lifewater Flask 4": dict(requires_pogo=True),
-    "Isle of Tar - Lifewater Flask 1": dict(requires_pogo=True),
-    "Isle of Tar - Lifewater Flask 2": dict(requires_pogo=True, gems=["Blue Gem"]),
+    "Border Village - Lifewater Flask 1": dict(requires=("pogo",)),
+    "Border Village - Lifewater Flask 2": dict(requires=("pogo",)),
+    "Border Village - Lifewater Flask 3": dict(requires=("pogo",)),
+    "Border Village - Lifewater Flask 4": dict(requires=("pogo",)),
+    "Border Village - Lifewater Flask 5": dict(requires=("pogo",)),
+    "Border Village - Lifewater Flask 6": dict(requires=("pogo",)),
+    "Border Village - Lifewater Flask 7": dict(requires=("pogo",)),
+    "Hilville - Lifewater Flask 1": dict(requires=("pogo",)),
+    "Sand Yego - Lifewater Flask 1": dict(requires=("pogo",)),
+    "Miragia - Lifewater Flask 1": dict(requires=("pogo",)),
+    "Pyramid of the Moons - Lifewater Flask 1": dict(requires=("pogo",)),
+    "Pyramid of Shadows - Lifewater Flask 1": dict(requires=("pogo", "stunner")),
+    "Pyramid of Shadows - Lifewater Flask 2": dict(requires=("stunner",)),
+    "Pyramid of Shadows - Lifewater Flask 3": dict(requires=("stunner",)),
+    "Pyramid of Shadows - Lifewater Flask 4": dict(requires=("stunner",)),
+    "Pyramid of Shadows - Lifewater Flask 5": dict(requires=("stunner",)),
+    "Pyramid of Shadows - Lifewater Flask 6": dict(requires=("stunner",)),
+    "Pyramid of Shadows - Lifewater Flask 7": dict(requires=("stunner",)),
+    "Pyramid of Shadows - Lifewater Flask 8": dict(requires=("stunner",)),
+    "Pyramid of the Gnosticine Ancients - Lifewater Flask 2": dict(requires=("stunner",)),
+    "Pyramid of the Gnosticine Ancients - Lifewater Flask 3": dict(requires=("stunner",)),
+    "Pyramid of the Gnosticine Ancients - Lifewater Flask 4": dict(requires=("pogo",)),
+    "Isle of Tar - Lifewater Flask 1": dict(requires=("pogo",)),
+    "Isle of Tar - Lifewater Flask 2": dict(requires=("pogo",), gems=["Blue Gem"]),
 }
 
 
@@ -79,26 +83,26 @@ ck4_flask_rules = {
 #   QED  Keg 1 (36,31) and Keg 2 (38,31) sit behind the same gate.
 # Levels not listed fall through to the default (level item only).
 ck5_keg_rules = {
-    "Ion Ventilation System - Vitalin Keg 1": dict(requires_pogo=True),
-    "Ion Ventilation System - Vitalin Keg 2": dict(requires_pogo=True),
-    "Ion Ventilation System - Vitalin Keg 3": dict(requires_pogo=True),
-    "Ion Ventilation System - Vitalin Keg 4": dict(requires_pogo=True),
-    "Ion Ventilation System - Vitalin Keg 5": dict(requires_pogo=True),
-    "Ion Ventilation System - Vitalin Keg 6": dict(requires_pogo=True),
-    "Ion Ventilation System - Vitalin Keg 7": dict(requires_pogo=True),
-    "Ion Ventilation System - Vitalin Keg 8": dict(requires_pogo=True),
-    "Ion Ventilation System - Vitalin Keg 9": dict(requires_pogo=True),
-    "Ion Ventilation System - Vitalin Keg 10": dict(requires_pogo=True),
+    "Ion Ventilation System - Vitalin Keg 1": dict(requires=("pogo",)),
+    "Ion Ventilation System - Vitalin Keg 2": dict(requires=("pogo",)),
+    "Ion Ventilation System - Vitalin Keg 3": dict(requires=("pogo",)),
+    "Ion Ventilation System - Vitalin Keg 4": dict(requires=("pogo",)),
+    "Ion Ventilation System - Vitalin Keg 5": dict(requires=("pogo",)),
+    "Ion Ventilation System - Vitalin Keg 6": dict(requires=("pogo",)),
+    "Ion Ventilation System - Vitalin Keg 7": dict(requires=("pogo",)),
+    "Ion Ventilation System - Vitalin Keg 8": dict(requires=("pogo",)),
+    "Ion Ventilation System - Vitalin Keg 9": dict(requires=("pogo",)),
+    "Ion Ventilation System - Vitalin Keg 10": dict(requires=("pogo",)),
     "Security Center - Vitalin Keg 1": dict(gems=["Blue Gem"]),
-    "Defense Tunnel Vlook - Vitalin Keg 1": dict(gems=["Yellow Gem"], requires_pogo=True),
+    "Defense Tunnel Vlook - Vitalin Keg 1": dict(gems=["Yellow Gem"], requires=("pogo",)),
     "Energy Flow Systems - Vitalin Keg 1": dict(gems=["Yellow Gem"]),
-    "Defense Tunnel Burrh - Vitalin Keg 1": dict(requires_pogo=True),
-    "Defense Tunnel Burrh - Vitalin Keg 2": dict(requires_pogo=True),
+    "Defense Tunnel Burrh - Vitalin Keg 1": dict(requires=("pogo",)),
+    "Defense Tunnel Burrh - Vitalin Keg 2": dict(requires=("pogo",)),
     "Defense Tunnel Teln - Vitalin Keg 1": dict(gems=["Red Gem"]),
-    "Brownian Motion Inducer - Vitalin Keg 1": dict(requires_pogo=True),
-    "Gravitational Damping Hub - Vitalin Keg 1": dict(gems=["Green Gem"], requires_pogo=True),
-    "Quantum Explosion Dynamo - Vitalin Keg 1": dict(requires_pogo=True, requires_stunner=True),
-    "Quantum Explosion Dynamo - Vitalin Keg 2": dict(requires_pogo=True, requires_stunner=True),
+    "Brownian Motion Inducer - Vitalin Keg 1": dict(requires=("pogo",)),
+    "Gravitational Damping Hub - Vitalin Keg 1": dict(gems=["Green Gem"], requires=("pogo",)),
+    "Quantum Explosion Dynamo - Vitalin Keg 1": dict(requires=("pogo", "stunner")),
+    "Quantum Explosion Dynamo - Vitalin Keg 2": dict(requires=("pogo", "stunner")),
 }
 
 
@@ -117,43 +121,43 @@ def create_ck_rules(self):
         set_location_rule(world, player, "The Perilous Pit - Red Gem", "The Perilous Pit")
         set_location_rule(world, player, "The Perilous Pit - Blue Gem", "The Perilous Pit")
         set_location_rule(world, player, "Cave of the Descendents Complete", "Cave of the Descendents",
-                          ["Yellow Gem"], requires_pogo=True)
+                          ["Yellow Gem"], requires=("pogo",))
         set_location_rule(world, player, "Cave of the Descendents - Red Gem", "Cave of the Descendents")
         set_location_rule(world, player, "Cave of the Descendents - Yellow Gem", "Cave of the Descendents",
                           ["Red Gem"])
         set_location_rule(world, player, "Chasm of Chills Complete", "Chasm of Chills")
         set_location_rule(world, player, "Crystalus Complete", "Crystalus",
                           ["Blue Gem"])
-        set_location_rule(world, player, "Crystalus - Green Gem", "Crystalus", requires_pogo=True)
+        set_location_rule(world, player, "Crystalus - Green Gem", "Crystalus", requires=("pogo",))
         set_location_rule(world, player, "Crystalus - Yellow Gem", "Crystalus",
-                          ["Green Gem"], requires_pogo=True)
+                          ["Green Gem"], requires=("pogo",))
         set_location_rule(world, player, "Crystalus - Red Gem", "Crystalus",
-                          ["Yellow Gem"], requires_pogo=True)
+                          ["Yellow Gem"], requires=("pogo",))
         set_location_rule(world, player, "Crystalus - Blue Gem", "Crystalus",
-                          ["Red Gem"], requires_pogo=True)
+                          ["Red Gem"], requires=("pogo",))
         set_location_rule(world, player, "Hilville Complete", "Hilville")
         set_location_rule(world, player, "Sand Yego Complete", "Sand Yego",
-                          ["Green Gem"], requires_pogo=True)
-        set_location_rule(world, player, "Sand Yego - Green Gem", "Sand Yego", requires_pogo=True)
-        set_location_rule(world, player, "Miragia Complete", "Miragia", requires_pogo=True)
+                          ["Green Gem"], requires=("pogo",))
+        set_location_rule(world, player, "Sand Yego - Green Gem", "Sand Yego", requires=("pogo",))
+        set_location_rule(world, player, "Miragia Complete", "Miragia", requires=("pogo",))
         set_location_rule(world, player, "Lifewater Oasis Complete", "Lifewater Oasis", ["Green Gem"])
         set_location_rule(world, player, "Lifewater Oasis - Green Gem", "Lifewater Oasis")
         set_location_rule(world, player, "Pyramid of the Moons Complete", "Pyramid of the Moons",
                           ["Yellow Gem"])
         set_location_rule(world, player, "Pyramid of the Moons - Yellow Gem", "Pyramid of the Moons")
         set_location_rule(world, player, "Pyramid of Shadows Complete", "Pyramid of Shadows",
-                          ["Blue Gem"], requires_stunner=True)
+                          ["Blue Gem"], requires=("stunner",))
         set_location_rule(world, player, "Pyramid of Shadows - Blue Gem", "Pyramid of Shadows",
-                          requires_stunner=True)
+                          requires=("stunner",))
         set_location_rule(world, player, "Pyramid of the Gnosticine Ancients Complete",
-                          "Pyramid of the Gnosticine Ancients", ["Red Gem", "Green Gem"], requires_pogo=True)
+                          "Pyramid of the Gnosticine Ancients", ["Red Gem", "Green Gem"], requires=("pogo",))
         set_location_rule(world, player, "Pyramid of the Gnosticine Ancients - Red Gem",
                           "Pyramid of the Gnosticine Ancients")
         set_location_rule(world, player, "Pyramid of the Gnosticine Ancients - Green Gem",
-                          "Pyramid of the Gnosticine Ancients", ["Red Gem"], requires_pogo=True)
+                          "Pyramid of the Gnosticine Ancients", ["Red Gem"], requires=("pogo",))
         set_location_rule(world, player, "Isle of Tar Complete", "Isle of Tar",
-                          ["Blue Gem"], requires_pogo=True)
-        set_location_rule(world, player, "Isle of Tar - Red Gem", "Isle of Tar", requires_pogo=True)
+                          ["Blue Gem"], requires=("pogo",))
+        set_location_rule(world, player, "Isle of Tar - Red Gem", "Isle of Tar", requires=("pogo",))
         set_location_rule(world, player, "Isle of Tar - Yellow Gem", "Isle of Tar", ["Red Gem"])
         set_location_rule(world, player, "Isle of Tar - Blue Gem", "Isle of Tar", ["Yellow Gem"])
         set_location_rule(world, player, "Isle of Fire Complete", "Isle of Fire",
@@ -191,7 +195,7 @@ def create_ck_rules(self):
         set_location_rule(world, player, "Security Center Complete", "Security Center",
                           ["Blue Gem"], keycard=True)
         set_location_rule(world, player, "Security Center - Red Gem", "Security Center")
-        set_location_rule(world, player, "Security Center - Blue Gem", "Security Center", ["Red Gem"], requires_pogo=True)
+        set_location_rule(world, player, "Security Center - Blue Gem", "Security Center", ["Red Gem"], requires=("pogo",))
         set_location_rule(world, player, "Security Center - Keycard", "Security Center",
                           ["Blue Gem"])
         set_location_rule(world, player, "Defense Tunnel Vlook Complete", "Defense Tunnel Vlook",
@@ -213,9 +217,9 @@ def create_ck_rules(self):
         set_location_rule(world, player, "Defense Tunnel Sorra Complete", "Defense Tunnel Sorra",
                           ["Yellow Gem"], keycard=True)
         set_location_rule(world, player, "Defense Tunnel Sorra - Yellow Gem", "Defense Tunnel Sorra",
-                          requires_pogo=True)
+                          requires=("pogo",))
         set_location_rule(world, player, "Defense Tunnel Sorra - Keycard", "Defense Tunnel Sorra",
-                          requires_stunner=True)
+                          requires=("stunner",))
         set_location_rule(world, player, "Defense Tunnel Teln Complete", "Defense Tunnel Teln",
                           ["Yellow Gem", "Blue Gem"], keycard=True)
         set_location_rule(world, player, "Defense Tunnel Teln - Red Gem", "Defense Tunnel Teln")
@@ -228,7 +232,7 @@ def create_ck_rules(self):
         set_location_rule(world, player, "Defense Tunnel Teln - Keycard", "Defense Tunnel Teln",
                           ["Yellow Gem", "Green Gem"])
         set_location_rule(world, player, "Energy Flow Systems Complete", "Energy Flow Systems",
-                          ["Green Gem"], requires_pogo=True)
+                          ["Green Gem"], requires=("pogo",))
         set_location_rule(world, player, "Energy Flow Systems - Red Gem", "Energy Flow Systems")
         set_location_rule(world, player, "Energy Flow Systems - Yellow Gem", "Energy Flow Systems",
                           ["Red Gem"])
@@ -237,42 +241,42 @@ def create_ck_rules(self):
         set_location_rule(world, player, "Energy Flow Systems - Green Gem", "Energy Flow Systems",
                           ["Blue Gem"])
         set_location_rule(world, player, "Regulation Control Center Complete", "Regulation Control Center",
-                          ["Red Gem", "Yellow Gem", "Blue Gem"], requires_pogo=True)
+                          ["Red Gem", "Yellow Gem", "Blue Gem"], requires=("pogo",))
         set_location_rule(world, player, "Regulation Control Center - Red Gem", "Regulation Control Center",
-                          requires_stunner=True)
+                          requires=("stunner",))
         set_location_rule(world, player, "Regulation Control Center - Yellow Gem",
-                          "Regulation Control Center", ["Red Gem"], requires_pogo_or_stunner=True)
+                          "Regulation Control Center", ["Red Gem"], requires=("pogo|stunner",))
         set_location_rule(world, player, "Regulation Control Center - Blue Gem",
-                          "Regulation Control Center", ["Red Gem", "Yellow Gem"], requires_pogo_or_stunner=True)
+                          "Regulation Control Center", ["Red Gem", "Yellow Gem"], requires=("pogo|stunner",))
         set_location_rule(world, player, "Neutrino Burst Injector Complete", "Neutrino Burst Injector",
-                          ["Red Gem", "Blue Gem"], requires_pogo=True)
+                          ["Red Gem", "Blue Gem"], requires=("pogo",))
         set_location_rule(world, player, "Neutrino Burst Injector - Red Gem", "Neutrino Burst Injector")
         set_location_rule(world, player, "Neutrino Burst Injector - Blue Gem", "Neutrino Burst Injector",
-                          requires_pogo=True)
+                          requires=("pogo",))
         set_location_rule(world, player, "Brownian Motion Inducer Complete", "Brownian Motion Inducer",
-                          ["Yellow Gem", "Blue Gem"], requires_pogo=True)
+                          ["Yellow Gem", "Blue Gem"], requires=("pogo",))
         set_location_rule(world, player, "Brownian Motion Inducer - Yellow Gem", "Brownian Motion Inducer",
-                          requires_pogo=True)
+                          requires=("pogo",))
         set_location_rule(world, player, "Brownian Motion Inducer - Blue Gem", "Brownian Motion Inducer",
-                          requires_pogo=True)
+                          requires=("pogo",))
         set_location_rule(world, player, "Gravitational Damping Hub Complete", "Gravitational Damping Hub",
-                          ["Green Gem"], keycard=True, requires_pogo=True)
+                          ["Green Gem"], keycard=True, requires=("pogo",))
         set_location_rule(world, player, "Gravitational Damping Hub - Red Gem", "Gravitational Damping Hub",
-                          ["Green Gem"], requires_pogo=True)
+                          ["Green Gem"], requires=("pogo",))
         set_location_rule(world, player, "Gravitational Damping Hub - Green Gem", "Gravitational Damping Hub",
-                          requires_pogo=True)
+                          requires=("pogo",))
         set_location_rule(world, player, "Gravitational Damping Hub - Keycard", "Gravitational Damping Hub",
-                          requires_pogo=True)
+                          requires=("pogo",))
         set_location_rule(world, player, "Quantum Explosion Dynamo Complete", "Quantum Explosion Dynamo",
-                          ["Red Gem", "Yellow Gem", "Blue Gem", "Green Gem"], requires_pogo=True)
+                          ["Red Gem", "Yellow Gem", "Blue Gem", "Green Gem"], requires=("pogo",))
         set_location_rule(world, player, "Quantum Explosion Dynamo - Red Gem","Quantum Explosion Dynamo",
-                          requires_pogo=True)
+                          requires=("pogo",))
         set_location_rule(world, player, "Quantum Explosion Dynamo - Yellow Gem", "Quantum Explosion Dynamo",
-                          requires_pogo=True)
+                          requires=("pogo",))
         set_location_rule(world, player, "Quantum Explosion Dynamo - Blue Gem", "Quantum Explosion Dynamo",
-                          requires_pogo=True)
+                          requires=("pogo",))
         set_location_rule(world, player, "Quantum Explosion Dynamo - Green Gem", "Quantum Explosion Dynamo",
-                          requires_pogo=True)
+                          requires=("pogo",))
 
         # QED Rule
         set_rule(
