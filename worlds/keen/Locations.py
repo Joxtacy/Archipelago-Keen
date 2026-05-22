@@ -269,6 +269,31 @@ ck4_lifewater_flask_excluded = {
     (LEVEL_POTGA, 0),
 }
 
+# Per-level engine-index → display-name override. Without an entry here,
+# location names follow engine scan order (idx+1). Use this only when the
+# engine's scan order does not match the visual layout players reason about.
+#
+# Engine scan order is info-plane first (in row-major order), then
+# tile-plane misc=27 (also row-major). So info-plane spawns always get
+# lower indices than tile-plane spawns, regardless of where they sit in
+# the level.
+#
+# Pyramid of the Gnosticine Ancients (v1.4):
+#   engine idx 0 → info  (4, 35)  — excluded (v1.0/v1.1 only)
+#   engine idx 1 → info  (37, 92) — lone bottom flask (pogo)
+#   engine idx 2 → tile  (36, 65) — upper-left paired flask (stunner)
+#   engine idx 3 → tile  (37, 65) — upper-right paired flask (stunner)
+# Players naturally label the paired upper flasks "2" and "3" and the
+# lone bottom flask "4". The Rules.py rules are written under that visual
+# convention ("Flask 4" = pogo, "Flasks 2/3" = stunner), so remap here.
+ck4_flask_display_index = {
+    (LEVEL_POTGA, 1): 4,
+    (LEVEL_POTGA, 2): 2,
+    (LEVEL_POTGA, 3): 3,
+}
+
+ck5_keg_display_index = {}
+
 ck4_level_id_to_name = {
     LEVEL_BV: "Border Village",
     LEVEL_SV: "Slug Village",
@@ -327,9 +352,16 @@ ck5_level_id_to_region = {
 
 
 def _build_extralife_locations(episode, level_counts, item_label, loc_builder,
-                               level_to_name, level_to_region, excluded=None):
-    """Generate {region_name: {location_name: location_id, ...}, ...}."""
+                               level_to_name, level_to_region, excluded=None,
+                               display_index=None):
+    """Generate {region_name: {location_name: location_id, ...}, ...}.
+
+    display_index optionally remaps (level_id, engine_idx) → display number
+    when the engine's scan order does not match the visual layout players
+    reason about. Defaults to idx+1.
+    """
     excluded = excluded or set()
+    display_index = display_index or {}
     result = {}
     for level_id, count in level_counts.items():
         if count <= 0:
@@ -341,7 +373,8 @@ def _build_extralife_locations(episode, level_counts, item_label, loc_builder,
         for idx in range(count):
             if (level_id, idx) in excluded:
                 continue
-            loc_name = f"{name} - {item_label} {idx + 1}"
+            display_num = display_index.get((level_id, idx), idx + 1)
+            loc_name = f"{name} - {item_label} {display_num}"
             result.setdefault(region, {})[loc_name] = loc_builder(episode, level_id, idx)
     return result
 
@@ -352,11 +385,13 @@ ck4_flask_locations_by_region = _build_extralife_locations(
     AP_EPISODE_CK4, ck4_extralife_counts, "Lifewater Flask", loc_flask,
     ck4_level_id_to_name, ck4_level_id_to_region,
     excluded=ck4_lifewater_flask_excluded,
+    display_index=ck4_flask_display_index,
 )
 
 ck5_keg_locations_by_region = _build_extralife_locations(
     AP_EPISODE_CK5, ck5_extralife_counts, "Vitalin Keg", loc_keg,
     ck5_level_id_to_name, ck5_level_id_to_region,
+    display_index=ck5_keg_display_index,
 )
 
 
