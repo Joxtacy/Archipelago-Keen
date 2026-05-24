@@ -40,17 +40,18 @@ class AdditionalStartingLevels(Range):
     
     default = 3
 
-# Leaving out for now - will return if/when pointsanity is implemented
+class EnablePointsanity(Toggle):
+    """
+    Whether to enable pointsanity.
+    With this option on, every reachable 5000-point pickup (the rarest /
+    highest-value score item — e.g. CK4 cheesecake, CK5 sugar) becomes its
+    own AP location check. Lower point tiers (100/200/500/1000/2000) are
+    NOT included; the omnispeak-ap engine currently only emits checks for
+    the 5000-pt class.
+    """
+    display_name = "Enable Pointsanity"
 
-#class EnablePointsanity(Toggle):
-#    """
-#    Whether to enable pointsanity.
-#    Adds a number of checks to each level at various point threshholds.
-#    *NOT YET IMPLEMENTED*
-#    """
-#   display_name = "Enable Pointsanity"
-#
-#    default = 0
+    default = 0
 
 class EnableFlasksanity(Toggle):
     """
@@ -125,7 +126,7 @@ class KeenOptions(PerGameCommonOptions):
     episode_select: EpisodeSelect
     enable_gemsets: EnableGemsets
     additional_starting_levels: AdditionalStartingLevels
-    # enable_pointsanity: EnablePointsanity
+    enable_pointsanity: EnablePointsanity
     enable_flasksanity: EnableFlasksanity
     enable_kegsanity: EnableKegsanity
     randomize_pogo: RandomizePogo

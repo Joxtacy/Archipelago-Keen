@@ -2,7 +2,9 @@ from worlds.generic.Rules import set_rule
 
 from .Locations import (
     ck4_flask_locations_by_region, ck5_keg_locations_by_region,
+    ck4_points5k_locations_by_region, ck5_points5k_locations_by_region,
     ck4_level_id_to_name, ck5_level_id_to_name,
+    ck4_level_id_to_name_with_potf,
 )
 
 # --------------------------------------------------
@@ -82,6 +84,16 @@ ck4_flask_rules = {
 #   DTV  Keg 1 (51,2) middle; Keg 2 (187,3) far-right.
 #   QED  Keg 1 (36,31) and Keg 2 (38,31) sit behind the same gate.
 # Levels not listed fall through to the default (level item only).
+# Per-pickup requirements beyond "have the level unlocked" for 5000-pt
+# pointsanity locations. Levels not listed inherit the default rule (level
+# item only). Populate as concrete out-of-reach pickups are identified;
+# wetsuit-gated levels in CK4 (IoT, IoF, WoW) are already region-gated by
+# K4 Lake so the Wetsuit does not need to be repeated as a per-pickup
+# requirement here.
+ck4_points5k_rules: dict[str, dict] = {}
+ck5_points5k_rules: dict[str, dict] = {}
+
+
 ck5_keg_rules = {
     "Ion Ventilation System - Vitalin Keg 1": dict(requires=("pogo",)),
     "Ion Ventilation System - Vitalin Keg 2": dict(requires=("pogo",)),
@@ -334,6 +346,19 @@ def create_ck_rules(self):
     if ep in [0, 2] and self.options.enable_kegsanity:
         _set_score_rules(ck5_keg_locations_by_region, ck5_level_id_to_name,
                          ck5_keg_rules)
+
+    # Pointsanity (5000-pt). PoTF has no flasks so it's missing from
+    # ck4_level_id_to_name — use the _with_potf variant so its pickups get
+    # rules attached.
+    if ep in [0, 1] and self.options.enable_pointsanity:
+        _set_score_rules(ck4_points5k_locations_by_region,
+                         ck4_level_id_to_name_with_potf,
+                         ck4_points5k_rules)
+
+    if ep in [0, 2] and self.options.enable_pointsanity:
+        _set_score_rules(ck5_points5k_locations_by_region,
+                         ck5_level_id_to_name,
+                         ck5_points5k_rules)
 
     # Victory condition
     if ep == 1:

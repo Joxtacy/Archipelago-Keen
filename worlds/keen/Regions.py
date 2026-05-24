@@ -2,6 +2,7 @@ from BaseClasses import Region
 from .Locations import (
     ck4_locations_by_region, ck5_locations_by_region,
     ck4_flask_locations_by_region, ck5_keg_locations_by_region,
+    ck4_points5k_locations_by_region, ck5_points5k_locations_by_region,
     KeenLocation,
 )
 
@@ -100,6 +101,12 @@ def attach_locations(world, region_name):
     # Flasksanity = CK4 Lifewater Flasks only (extra-life centilives in CK4).
     if world.options.enable_flasksanity:
         locations.update(ck4_flask_locations_by_region.get(region_name, {}))
+
+    # Pointsanity = 5000-pt pickups (CK4 + CK5). Engine sends only class=5
+    # checks right now; lower point tiers are wired but disabled engine-side.
+    if world.options.enable_pointsanity:
+        locations.update(ck4_points5k_locations_by_region.get(region_name, {}))
+        locations.update(ck5_points5k_locations_by_region.get(region_name, {}))
 
     for loc_name, loc_id in locations.items():
         region.locations.append(

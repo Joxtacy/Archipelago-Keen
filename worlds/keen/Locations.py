@@ -10,13 +10,19 @@ class KeenLocation(Location):
 AP_LOC_BASE_LEVEL_COMPLETE = 10000
 AP_LOC_BASE_KEYGEM = 20000
 AP_LOC_BASE_KEYCARD = 30000
-AP_LOC_BASE_POINTSANITY = 40000
+# 40000–99999 was the original pointsanity range when class+instance were
+# packed into AP_LOC_LEVEL_STRIDE = 100. Real maps have up to ~124 instances
+# of a single point class per level (CK5 IVS 100-pt items), so the packed
+# scheme couldn't fit and pointsanity moved to its own per-class 100k ranges
+# at AP_LOC_BASE_POINTSANITY below. 40000–99999 is intentionally unused —
+# do not repurpose without coordinating with omnispeak-ap's ap_defs.h.
 # Centilife pickups (extra-life accumulators, foreground tile misc=4).
 # CK5 sprite is a Vitalin Keg; CK4 sprite is a Lifewater Flask. Same engine
 # mechanic, different sprite — we use two separate bases so the location
 # name space stays clean per episode.
 AP_LOC_BASE_KEG = 50000     # CK5 Vitalin Kegs
 AP_LOC_BASE_FLASK = 60000   # CK4 Lifewater Flasks
+AP_LOC_BASE_POINTSANITY = 100000
 
 AP_LOC_EPISODE_STRIDE = 2000
 AP_LOC_LEVEL_STRIDE = 100
@@ -99,6 +105,29 @@ def loc_keg(ep, lvl, idx):
         + (ep * AP_LOC_EPISODE_STRIDE)
         + (lvl * AP_LOC_LEVEL_STRIDE)
         + idx
+    )
+
+# Pointsanity uses its own strides (engine: omnispeak-ap commit 451e296),
+# separate from the global AP_LOC_*_STRIDE values above, because real maps
+# pack up to ~124 instances of a single point class per level — too dense
+# to share AP_LOC_LEVEL_STRIDE = 100. Layout:
+#     loc = BASE + cls * CLASS_STRIDE + ep * EP_STRIDE + lvl * LVL_STRIDE + inst
+# Round-decimal addressing means the class is readable from the 100k digit:
+# 1xxxxx = 100 pt, 2xxxxx = 200 pt, ..., 6xxxxx = 5000 pt. Currently only
+# class 5 (5000 pt) is emitted by the engine; classes 0..4 are wired but
+# disabled there.
+AP_POINTSANITY_CLASS_STRIDE = 100000
+AP_POINTSANITY_EPISODE_STRIDE = 20000
+AP_POINTSANITY_LEVEL_STRIDE = 1000
+POINTS5K_CLASS = 5
+
+def loc_pointsanity(ep, lvl, cls, inst):
+    return (
+        AP_LOC_BASE_POINTSANITY
+        + (cls * AP_POINTSANITY_CLASS_STRIDE)
+        + (ep * AP_POINTSANITY_EPISODE_STRIDE)
+        + (lvl * AP_POINTSANITY_LEVEL_STRIDE)
+        + inst
     )
 
 def loc_flask(ep, lvl, idx):
@@ -394,6 +423,102 @@ ck5_keg_locations_by_region = _build_extralife_locations(
     display_index=ck5_keg_display_index,
 )
 
+# --------------------------------------------------
+# Pointsanity (5000-pt pickups)
+# --------------------------------------------------
+# The omnispeak-ap engine currently only emits AP location checks for the
+# 5000-pt class (class 5). When the engine flips additional classes on, add
+# the matching counts dictionaries here and extend _build_pointsanity_locations
+# to walk every enabled class. Until then, "pointsanity" in the apworld means
+# "5000-pt pickups only".
+#
+# Counts are populated from score_item_dump.txt produced by the engine when
+# run with OMNISPEAK_DUMP_SCORE_ITEMS=1. Indices are 0-based to match the
+# engine's per-class scan counter; display names use 1-based for readability
+# ("Crystalus - 5000pt Pickup 1").
+
+ck4_points5k_counts = {
+    LEVEL_BV: 0,   LEVEL_SV: 3,    LEVEL_PP: 1,    LEVEL_COTD: 11, LEVEL_COC: 7,
+    LEVEL_CRYS: 3, LEVEL_HIL: 1,   LEVEL_SY: 4,    LEVEL_MIR: 5,   LEVEL_LO: 0,
+    LEVEL_POTM: 6, LEVEL_POS: 1,   LEVEL_POTGA: 1,
+    # Pyramid of the Forbidden is intentionally not wired into the apworld
+    # (no level item, no completion check; see commented-out lines in
+    # Items.py). Its 14 5000-pt pickups exist in the level data but cannot
+    # be exposed as checks until the level itself is added. Engine-side
+    # those pickups will still fire ap_on_pointitem_get → the AP server
+    # will ignore the unknown location IDs.
+    LEVEL_POTF: 0,
+    LEVEL_IOT: 3,  LEVEL_IOF: 5,   LEVEL_WOW: 0,   LEVEL_BWBM: 0,
+}
+
+ck5_points5k_counts = {
+    LEVEL_IVS: 0,  LEVEL_SC: 28,  LEVEL_DTV: 7,  LEVEL_EFS: 10, LEVEL_DTB: 4,
+    LEVEL_RCC: 0,  LEVEL_DTS: 13, LEVEL_NBI: 4,  LEVEL_DTT: 10, LEVEL_BMI: 8,
+    LEVEL_GDH: 15, LEVEL_QED: 9,
+}
+
+# Same shape as ck4_lifewater_flask_excluded: (level_id, engine_idx) tuples
+# for 5000-pt pickups present in level data but unreachable in normal play.
+# Populate as concrete unreachables are found.
+ck4_points5k_excluded: set[tuple[int, int]] = set()
+ck5_points5k_excluded: set[tuple[int, int]] = set()
+
+# Per-level engine-index → display-number override. Use only when the engine
+# scan order (info-plane row-major first, then tile-plane row-major) does not
+# match how a player visually labels the pickups.
+ck4_points5k_display_index: dict[tuple[int, int], int] = {}
+ck5_points5k_display_index: dict[tuple[int, int], int] = {}
+
+# POTF doesn't appear in the existing level→region map (it's not in the flask
+# locations either because there are zero flasks there) — patch it in for
+# pointsanity so its 5000-pt pickups land in the right region.
+LEVEL_POTF_REGION = "K4 Overworld"
+ck4_level_id_to_region_with_potf = {**ck4_level_id_to_region, LEVEL_POTF: LEVEL_POTF_REGION}
+ck4_level_id_to_name_with_potf = {**ck4_level_id_to_name, LEVEL_POTF: "Pyramid of the Forbidden"}
+
+
+def _build_pointsanity_locations(episode, level_counts, level_to_name,
+                                 level_to_region, excluded=None,
+                                 display_index=None):
+    """{region_name: {location_name: location_id}} for 5000-pt pickups only.
+
+    Mirrors _build_extralife_locations but routes through loc_pointsanity with
+    class=POINTS5K_CLASS. Returns nothing for levels with count=0.
+    """
+    excluded = excluded or set()
+    display_index = display_index or {}
+    result = {}
+    for level_id, count in level_counts.items():
+        if count <= 0:
+            continue
+        region = level_to_region.get(level_id)
+        name = level_to_name.get(level_id)
+        if region is None or name is None:
+            continue
+        for idx in range(count):
+            if (level_id, idx) in excluded:
+                continue
+            display_num = display_index.get((level_id, idx), idx + 1)
+            loc_name = f"{name} - 5000pt Pickup {display_num}"
+            result.setdefault(region, {})[loc_name] = loc_pointsanity(
+                episode, level_id, POINTS5K_CLASS, idx)
+    return result
+
+
+ck4_points5k_locations_by_region = _build_pointsanity_locations(
+    AP_EPISODE_CK4, ck4_points5k_counts,
+    ck4_level_id_to_name_with_potf, ck4_level_id_to_region_with_potf,
+    excluded=ck4_points5k_excluded,
+    display_index=ck4_points5k_display_index,
+)
+
+ck5_points5k_locations_by_region = _build_pointsanity_locations(
+    AP_EPISODE_CK5, ck5_points5k_counts,
+    ck5_level_id_to_name, ck5_level_id_to_region,
+    excluded=ck5_points5k_excluded,
+    display_index=ck5_points5k_display_index,
+)
+
 
 # Full name→id table covers every potentially registered location so the
 # AP client and tracker can resolve names regardless of generation options.
@@ -404,6 +529,7 @@ location_table = {
     for locations in [
         ck4_locations_by_region, ck5_locations_by_region,
         ck4_flask_locations_by_region, ck5_keg_locations_by_region,
+        ck4_points5k_locations_by_region, ck5_points5k_locations_by_region,
     ]
     for region_dict in locations.values()
     for loc_name, loc_id in region_dict.items()
