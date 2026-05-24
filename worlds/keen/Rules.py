@@ -86,11 +86,41 @@ ck4_flask_rules = {
 # Levels not listed fall through to the default (level item only).
 # Per-pickup requirements beyond "have the level unlocked" for 5000-pt
 # pointsanity locations. Levels not listed inherit the default rule (level
-# item only). Populate as concrete out-of-reach pickups are identified;
-# wetsuit-gated levels in CK4 (IoT, IoF, WoW) are already region-gated by
-# K4 Lake so the Wetsuit does not need to be repeated as a per-pickup
-# requirement here.
-ck4_points5k_rules: dict[str, dict] = {}
+# item only). Populated from the audit in docs/pointsanity_ck4.md /
+# pointsanity_ck5.md. wetsuit-gated levels in CK4 (IoT, IoF, WoW) are
+# already region-gated by K4 Lake so the Wetsuit does not need to be
+# repeated as a per-pickup requirement here.
+#
+# Per-pickup rules state ALL requirements (not deltas vs. the level rule),
+# matching the convention used by ck4_flask_rules / ck5_keg_rules.
+ck4_points5k_rules = {
+    "Slug Village - 5000pt Pickup 1": dict(requires=("pogo",)),
+    "The Perilous Pit - 5000pt Pickup 1": dict(requires=("pogo",)),
+    "Cave of the Descendents - 5000pt Pickup 11": dict(requires=("pogo",)),
+    "Chasm of Chills - 5000pt Pickup 3": dict(requires=("pogo",)),
+    "Crystalus - 5000pt Pickup 1": dict(requires=("pogo",)),
+    "Crystalus - 5000pt Pickup 2": dict(requires=("pogo",)),
+    "Crystalus - 5000pt Pickup 3": dict(gems=["Blue Gem"]),
+    "Hilville - 5000pt Pickup 1": dict(requires=("pogo",)),
+    # Sand Yego Pickup 1 (engine idx 0, tile 31,45) is in ck4_points5k_excluded
+    # because no in-game route to it was found during the audit.
+    "Sand Yego - 5000pt Pickup 3": dict(requires=("pogo",)),
+    "Miragia - 5000pt Pickup 1": dict(requires=("pogo",)),
+    "Miragia - 5000pt Pickup 2": dict(requires=("pogo",)),
+    "Pyramid of the Moons - 5000pt Pickup 1": dict(requires=("pogo",)),
+    "Pyramid of the Moons - 5000pt Pickup 2": dict(requires=("pogo",)),
+    "Pyramid of the Moons - 5000pt Pickup 3": dict(requires=("pogo",)),
+    "Pyramid of the Moons - 5000pt Pickup 4": dict(requires=("pogo",)),
+    "Pyramid of the Moons - 5000pt Pickup 5": dict(requires=("pogo",)),
+    "Pyramid of the Moons - 5000pt Pickup 6": dict(requires=("pogo",)),
+    "Pyramid of the Gnosticine Ancients - 5000pt Pickup 1": dict(requires=("pogo",)),
+    "Isle of Tar - 5000pt Pickup 1": dict(requires=("pogo",)),
+    "Isle of Fire - 5000pt Pickup 1": dict(requires=("pogo",)),
+    "Isle of Fire - 5000pt Pickup 2": dict(requires=("pogo",)),
+    "Isle of Fire - 5000pt Pickup 3": dict(requires=("pogo",)),
+    "Isle of Fire - 5000pt Pickup 4": dict(requires=("pogo",)),
+    "Isle of Fire - 5000pt Pickup 5": dict(requires=("pogo",)),
+}
 ck5_points5k_rules: dict[str, dict] = {}
 
 

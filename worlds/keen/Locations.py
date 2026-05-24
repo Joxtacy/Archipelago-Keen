@@ -460,7 +460,12 @@ ck5_points5k_counts = {
 # Same shape as ck4_lifewater_flask_excluded: (level_id, engine_idx) tuples
 # for 5000-pt pickups present in level data but unreachable in normal play.
 # Populate as concrete unreachables are found.
-ck4_points5k_excluded: set[tuple[int, int]] = set()
+ck4_points5k_excluded: set[tuple[int, int]] = {
+    # Sand Yego engine idx 0 = tile (31, 45), info-layer. Could not be
+    # located during the manual audit — flagging as excluded until/unless
+    # a route is confirmed. Worst case: a missing check, never a softlock.
+    (LEVEL_SY, 0),
+}
 ck5_points5k_excluded: set[tuple[int, int]] = set()
 
 # Per-level engine-index → display-number override. Use only when the engine
