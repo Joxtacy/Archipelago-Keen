@@ -150,11 +150,11 @@ def create_ck_rules(self):
         set_location_rule(world, player, "Pyramid of Shadows - Blue Gem", "Pyramid of Shadows",
                           requires=("stunner",))
         set_location_rule(world, player, "Pyramid of the Gnosticine Ancients Complete",
-                          "Pyramid of the Gnosticine Ancients", ["Red Gem", "Green Gem"], requires=("pogo",))
+                          "Pyramid of the Gnosticine Ancients", ["Green Gem"], requires=("pogo",))
         set_location_rule(world, player, "Pyramid of the Gnosticine Ancients - Red Gem",
                           "Pyramid of the Gnosticine Ancients")
         set_location_rule(world, player, "Pyramid of the Gnosticine Ancients - Green Gem",
-                          "Pyramid of the Gnosticine Ancients", ["Red Gem"], requires=("pogo",))
+                          "Pyramid of the Gnosticine Ancients", requires=("pogo",))
         set_location_rule(world, player, "Isle of Tar Complete", "Isle of Tar",
                           ["Blue Gem"], requires=("pogo",))
         set_location_rule(world, player, "Isle of Tar - Red Gem", "Isle of Tar", requires=("pogo",))
