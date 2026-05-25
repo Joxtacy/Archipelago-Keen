@@ -253,15 +253,18 @@ ck5_extralife_counts = {
 # cross-referencing the KeenWiki:
 # - Lifewater Oasis: all 5 flasks sit on the same Y row at the bottom of the
 #   level, unreachable due to a known level-design oversight.
-# - Cave of the Descendents: both flasks unreachable without cheating or
-#   dying through them (the KeenWiki notes flasks don't register on death).
 # - The Perilous Pit: both flasks unreachable in normal gameplay.
 # - Pyramid of the Gnosticine Ancients flask 0 (engine index): reachable in
 #   Apogee v1.0/v1.1 only. Omnispeak ships v1.4 data (see
 #   data/keen4/EPISODE.CK4 in the omnispeak fork), so it cannot be obtained.
+#
+# Cave of the Descendents' two flasks are reachable via a secret passage in
+# the lower-right (drop through the shaft with the moving shovels). The
+# pocket they sit in has no exit, so the player must die to leave — but the
+# pickups register before death and dying nets +1 life overall, so the trip
+# is not punishing. They are valid AP checks.
 ck4_lifewater_flask_excluded = {
     (LEVEL_LO, 0), (LEVEL_LO, 1), (LEVEL_LO, 2), (LEVEL_LO, 3), (LEVEL_LO, 4),
-    (LEVEL_COTD, 0), (LEVEL_COTD, 1),
     (LEVEL_PP, 0), (LEVEL_PP, 1),
     (LEVEL_POTGA, 0),
 }
