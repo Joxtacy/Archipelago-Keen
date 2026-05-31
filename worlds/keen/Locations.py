@@ -435,7 +435,7 @@ ck5_keg_locations_by_region = _build_extralife_locations(
 # Counts are populated from score_item_dump.txt produced by the engine when
 # run with OMNISPEAK_DUMP_SCORE_ITEMS=1. Indices are 0-based to match the
 # engine's per-class scan counter; display names use 1-based for readability
-# ("Crystalus - 5000pt Pickup 1").
+# ("Crystalus - Ice Cream Cone 1").
 
 ck4_points5k_counts = {
     LEVEL_BV: 0,   LEVEL_SV: 3,    LEVEL_PP: 1,    LEVEL_COTD: 11, LEVEL_COC: 7,
@@ -482,13 +482,22 @@ ck4_level_id_to_region_with_potf = {**ck4_level_id_to_region, LEVEL_POTF: LEVEL_
 ck4_level_id_to_name_with_potf = {**ck4_level_id_to_name, LEVEL_POTF: "Pyramid of the Forbidden"}
 
 
-def _build_pointsanity_locations(episode, level_counts, level_to_name,
-                                 level_to_region, excluded=None,
-                                 display_index=None):
-    """{region_name: {location_name: location_id}} for 5000-pt pickups only.
+# In-game sprite names for the 5000-pt pickup, by episode. CK4 uses ice
+# cream cones; CK5 uses bags of sugar. When additional point classes are
+# enabled engine-side, add their per-episode labels here too.
+CK4_POINTS5K_LABEL = "Ice Cream Cone"
+CK5_POINTS5K_LABEL = "Bag O' Sugar"
 
-    Mirrors _build_extralife_locations but routes through loc_pointsanity with
-    class=POINTS5K_CLASS. Returns nothing for levels with count=0.
+
+def _build_pointsanity_locations(episode, level_counts, item_label,
+                                 level_to_name, level_to_region,
+                                 excluded=None, display_index=None):
+    """{region_name: {location_name: location_id}} for one point class.
+
+    item_label is the in-game sprite name used in the location string
+    ("<Level Name> - <item_label> <N>"). Mirrors _build_extralife_locations
+    but routes through loc_pointsanity with class=POINTS5K_CLASS. Returns
+    nothing for levels with count=0.
     """
     excluded = excluded or set()
     display_index = display_index or {}
@@ -504,21 +513,21 @@ def _build_pointsanity_locations(episode, level_counts, level_to_name,
             if (level_id, idx) in excluded:
                 continue
             display_num = display_index.get((level_id, idx), idx + 1)
-            loc_name = f"{name} - 5000pt Pickup {display_num}"
+            loc_name = f"{name} - {item_label} {display_num}"
             result.setdefault(region, {})[loc_name] = loc_pointsanity(
                 episode, level_id, POINTS5K_CLASS, idx)
     return result
 
 
 ck4_points5k_locations_by_region = _build_pointsanity_locations(
-    AP_EPISODE_CK4, ck4_points5k_counts,
+    AP_EPISODE_CK4, ck4_points5k_counts, CK4_POINTS5K_LABEL,
     ck4_level_id_to_name_with_potf, ck4_level_id_to_region_with_potf,
     excluded=ck4_points5k_excluded,
     display_index=ck4_points5k_display_index,
 )
 
 ck5_points5k_locations_by_region = _build_pointsanity_locations(
-    AP_EPISODE_CK5, ck5_points5k_counts,
+    AP_EPISODE_CK5, ck5_points5k_counts, CK5_POINTS5K_LABEL,
     ck5_level_id_to_name, ck5_level_id_to_region,
     excluded=ck5_points5k_excluded,
     display_index=ck5_points5k_display_index,

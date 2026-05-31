@@ -1,4 +1,7 @@
-# CK4 Pointsanity Worksheet (5000-pt pickups)
+# CK4 Pointsanity Worksheet — Ice Cream Cone
+
+CK4's 5000-pt pickup is the **Ice Cream Cone**. Locations are named
+`"<Level Name> - Ice Cream Cone <N>"` in the apworld.
 
 Fill in the `Requires` column for each pickup, then I'll translate to `ck4_points5k_rules` entries in `Rules.py`.
 

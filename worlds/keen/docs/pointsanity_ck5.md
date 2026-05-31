@@ -1,4 +1,7 @@
-# CK5 Pointsanity Worksheet (5000-pt pickups)
+# CK5 Pointsanity Worksheet — Bag O' Sugar
+
+CK5's 5000-pt pickup is the **Bag O' Sugar**. Locations are named
+`"<Level Name> - Bag O' Sugar <N>"` in the apworld.
 
 Fill in the `Requires` column for each pickup, then I'll translate to `ck5_points5k_rules` entries in `Rules.py`.
 
