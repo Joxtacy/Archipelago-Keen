@@ -94,6 +94,7 @@ ck5_keg_rules = {
     "Ion Ventilation System - Vitalin Keg 9": dict(requires=("pogo",)),
     "Ion Ventilation System - Vitalin Keg 10": dict(requires=("pogo",)),
     "Security Center - Vitalin Keg 1": dict(gems=["Blue Gem"]),
+    "Security Center - Vitalin Keg 2": dict(requires=("pogo",)),
     "Defense Tunnel Vlook - Vitalin Keg 1": dict(gems=["Yellow Gem"], requires=("pogo",)),
     "Energy Flow Systems - Vitalin Keg 1": dict(gems=["Yellow Gem"]),
     "Defense Tunnel Burrh - Vitalin Keg 1": dict(requires=("pogo",)),
