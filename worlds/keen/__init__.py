@@ -1,5 +1,5 @@
 from BaseClasses import Region, Location, ItemClassification, Item
-from worlds.AutoWorld import World
+from worlds.AutoWorld import World, WebWorld
 from worlds.generic.Rules import set_rule
 import logging
 from dataclasses import dataclass
@@ -15,9 +15,29 @@ from .Options import KeenOptions
 from .Regions import create_ck4_regions, create_ck5_regions
 from .Rules import create_ck_rules
 
+# Web-side metadata (for AP's webhost). Without this, the bare WebWorld
+# default has no `tutorials` attribute, the docs aren't copied to
+# WebHostLib/static/generated/docs/, and the test_docs / test_sitemap
+# checks in test/webhost/ fail.
+from BaseClasses import Tutorial
+
+
+class KeenWeb(WebWorld):
+    theme = "jungle"
+    tutorials = [Tutorial(
+        "Multiworld Setup Guide",
+        "A guide to setting up the Commander Keen randomizer connected to an Archipelago Multiworld.",
+        "English",
+        "setup_en.md",
+        "setup/en",
+        ["Joxtacy"],
+    )]
+
+
 class KeenWorld(World):
     game = "Commander Keen"
     options_dataclass = KeenOptions
+    web = KeenWeb()
 
     location_name_to_id = location_table
     item_name_to_id = item_name_to_id
