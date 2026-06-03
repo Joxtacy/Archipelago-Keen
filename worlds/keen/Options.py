@@ -40,16 +40,27 @@ class AdditionalStartingLevels(Range):
     
     default = 3
 
-class EnablePointsanity(Toggle):
+class EnableConesanity(Toggle):
     """
-    Whether to enable pointsanity.
-    With this option on, every reachable 5000-point pickup (the rarest /
-    highest-value score item — e.g. CK4 cheesecake, CK5 sugar) becomes its
-    own AP location check. Lower point tiers (100/200/500/1000/2000) are
-    NOT included; the omnispeak-ap engine currently only emits checks for
-    the 5000-pt class.
+    Whether to enable conesanity (Keen 4 only).
+    With this option on, every reachable Ice Cream Cone in Keen 4 (the
+    5000-point pickup) becomes its own AP location check. Lower point
+    tiers (100/200/500/1000/2000) are NOT included; the omnispeak-ap
+    engine currently only emits checks for the 5000-pt class.
     """
-    display_name = "Enable Pointsanity"
+    display_name = "Enable Conesanity"
+
+    default = 0
+
+class EnableSugarsanity(Toggle):
+    """
+    Whether to enable sugarsanity (Keen 5 only).
+    With this option on, every reachable Bag O' Sugar in Keen 5 (the
+    5000-point pickup) becomes its own AP location check. Lower point
+    tiers (100/200/500/1000/2000) are NOT included; the omnispeak-ap
+    engine currently only emits checks for the 5000-pt class.
+    """
+    display_name = "Enable Sugarsanity"
 
     default = 0
 
@@ -126,7 +137,8 @@ class KeenOptions(PerGameCommonOptions):
     episode_select: EpisodeSelect
     enable_gemsets: EnableGemsets
     additional_starting_levels: AdditionalStartingLevels
-    enable_pointsanity: EnablePointsanity
+    enable_conesanity: EnableConesanity
+    enable_sugarsanity: EnableSugarsanity
     enable_flasksanity: EnableFlasksanity
     enable_kegsanity: EnableKegsanity
     randomize_pogo: RandomizePogo

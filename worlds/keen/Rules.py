@@ -465,15 +465,17 @@ def create_ck_rules(self):
         _set_score_rules(ck5_keg_locations_by_region, ck5_level_id_to_name,
                          ck5_keg_rules)
 
-    # Pointsanity (5000-pt). PoTF has no flasks so it's missing from
-    # ck4_level_id_to_name — use the _with_potf variant so its pickups get
+    # Conesanity = CK4 Ice Cream Cones; sugarsanity = CK5 Bag O' Sugar.
+    # Both are 5000-pt pickups (engine class 5). PoTF has no flasks so it's
+    # missing from ck4_level_id_to_name — use the _with_potf variant so its
+    # pickups (none active currently, but the helper allows for them) get
     # rules attached.
-    if ep in [0, 1] and self.options.enable_pointsanity:
+    if ep in [0, 1] and self.options.enable_conesanity:
         _set_score_rules(ck4_points5k_locations_by_region,
                          ck4_level_id_to_name_with_potf,
                          ck4_points5k_rules)
 
-    if ep in [0, 2] and self.options.enable_pointsanity:
+    if ep in [0, 2] and self.options.enable_sugarsanity:
         _set_score_rules(ck5_points5k_locations_by_region,
                          ck5_level_id_to_name,
                          ck5_points5k_rules)
