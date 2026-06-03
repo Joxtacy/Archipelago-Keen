@@ -466,7 +466,21 @@ ck4_points5k_excluded: set[tuple[int, int]] = {
     # a route is confirmed. Worst case: a missing check, never a softlock.
     (LEVEL_SY, 0),
 }
-ck5_points5k_excluded: set[tuple[int, int]] = set()
+ck5_points5k_excluded: set[tuple[int, int]] = {
+    # Security Center engine idx 8 & 9 = tiles (63,14)/(64,14), the upper pair
+    # of the front Blue-Gem sugar cluster (display #9 & #10). They sit purely
+    # in tile-row 14, one row above the row-15 sugars that rest on the floor.
+    # Verified unreachable in normal play: an item is only collision-active
+    # while on screen, and the camera in this pit is scroll-locked so that
+    # tile-row 14 stays above the top of the view — the two bags never
+    # activate, so Keen (whose hitbox does reach that row from the floor)
+    # passes straight through them. Confirmed by an in-engine reachability
+    # harness (omnispeak) and by playtest. Neighbours that dip into row 15
+    # (the 1-up, the row-15 sugars) collect fine. Worst case: a missing check,
+    # never a softlock.
+    (LEVEL_SC, 8),
+    (LEVEL_SC, 9),
+}
 
 # Per-level engine-index → display-number override. Use only when the engine
 # scan order (info-plane row-major first, then tile-plane row-major) does not

@@ -121,7 +121,95 @@ ck4_points5k_rules = {
     "Isle of Fire - Ice Cream Cone 4": dict(requires=("pogo",)),
     "Isle of Fire - Ice Cream Cone 5": dict(requires=("pogo",)),
 }
-ck5_points5k_rules: dict[str, dict] = {}
+ck5_points5k_rules = {
+    # Security Center: 28 Bags O' Sugar. Pickups 1–14 sit behind the Blue Gem
+    # door; 15–20 need pogo to reach; 21–28 are accessible by default.
+    "Security Center - Bag O' Sugar 1": dict(gems=["Blue Gem"]),
+    "Security Center - Bag O' Sugar 2": dict(gems=["Blue Gem"]),
+    "Security Center - Bag O' Sugar 3": dict(gems=["Blue Gem"]),
+    "Security Center - Bag O' Sugar 4": dict(gems=["Blue Gem"]),
+    "Security Center - Bag O' Sugar 5": dict(gems=["Blue Gem"]),
+    "Security Center - Bag O' Sugar 6": dict(gems=["Blue Gem"]),
+    "Security Center - Bag O' Sugar 7": dict(gems=["Blue Gem"]),
+    "Security Center - Bag O' Sugar 8": dict(gems=["Blue Gem"]),
+    "Security Center - Bag O' Sugar 9": dict(gems=["Blue Gem"]),
+    "Security Center - Bag O' Sugar 10": dict(gems=["Blue Gem"]),
+    "Security Center - Bag O' Sugar 11": dict(gems=["Blue Gem"]),
+    "Security Center - Bag O' Sugar 12": dict(gems=["Blue Gem"]),
+    "Security Center - Bag O' Sugar 13": dict(gems=["Blue Gem"]),
+    "Security Center - Bag O' Sugar 14": dict(gems=["Blue Gem"]),
+    "Security Center - Bag O' Sugar 15": dict(requires=("pogo",)),
+    "Security Center - Bag O' Sugar 16": dict(requires=("pogo",)),
+    "Security Center - Bag O' Sugar 17": dict(requires=("pogo",)),
+    "Security Center - Bag O' Sugar 18": dict(requires=("pogo",)),
+    "Security Center - Bag O' Sugar 19": dict(requires=("pogo",)),
+    "Security Center - Bag O' Sugar 20": dict(requires=("pogo",)),
+    # SC 21–28 default.
+
+    # Defense Tunnel Vlook (7) — all accessible by default (entrance area).
+    # Energy Flow Systems (10) — all default.
+    # Defense Tunnel Sorra (13) — all default (entrance hall pickups).
+
+    # Defense Tunnel Burrh: all 4 pickups behind a Red Gem door, need pogo.
+    "Defense Tunnel Burrh - Bag O' Sugar 1": dict(requires=("pogo",), gems=["Red Gem"]),
+    "Defense Tunnel Burrh - Bag O' Sugar 2": dict(requires=("pogo",), gems=["Red Gem"]),
+    "Defense Tunnel Burrh - Bag O' Sugar 3": dict(requires=("pogo",), gems=["Red Gem"]),
+    "Defense Tunnel Burrh - Bag O' Sugar 4": dict(requires=("pogo",), gems=["Red Gem"]),
+
+    # Neutrino Burst Injector: 1–2 need pogo (ceiling pair); 3–4 default.
+    "Neutrino Burst Injector - Bag O' Sugar 1": dict(requires=("pogo",)),
+    "Neutrino Burst Injector - Bag O' Sugar 2": dict(requires=("pogo",)),
+
+    # Defense Tunnel Teln: 1–6 behind Yellow + Blue Gem doors; 7–10 behind
+    # Yellow Gem only.
+    "Defense Tunnel Teln - Bag O' Sugar 1": dict(gems=["Yellow Gem", "Blue Gem"]),
+    "Defense Tunnel Teln - Bag O' Sugar 2": dict(gems=["Yellow Gem", "Blue Gem"]),
+    "Defense Tunnel Teln - Bag O' Sugar 3": dict(gems=["Yellow Gem", "Blue Gem"]),
+    "Defense Tunnel Teln - Bag O' Sugar 4": dict(gems=["Yellow Gem", "Blue Gem"]),
+    "Defense Tunnel Teln - Bag O' Sugar 5": dict(gems=["Yellow Gem", "Blue Gem"]),
+    "Defense Tunnel Teln - Bag O' Sugar 6": dict(gems=["Yellow Gem", "Blue Gem"]),
+    "Defense Tunnel Teln - Bag O' Sugar 7": dict(gems=["Yellow Gem"]),
+    "Defense Tunnel Teln - Bag O' Sugar 8": dict(gems=["Yellow Gem"]),
+    "Defense Tunnel Teln - Bag O' Sugar 9": dict(gems=["Yellow Gem"]),
+    "Defense Tunnel Teln - Bag O' Sugar 10": dict(gems=["Yellow Gem"]),
+
+    # Brownian Motion Inducer: all 8 bags reachable with level access only.
+
+    # Gravitational Damping Hub: 1–10 behind Green Gem + need pogo; 11–13
+    # need pogo only; 14–15 default. (Whole level is also region-gated by
+    # End Game completion of EFS+RCC+NBI+BMI — no need to repeat here.)
+    "Gravitational Damping Hub - Bag O' Sugar 1": dict(requires=("pogo",), gems=["Green Gem"]),
+    "Gravitational Damping Hub - Bag O' Sugar 2": dict(requires=("pogo",), gems=["Green Gem"]),
+    "Gravitational Damping Hub - Bag O' Sugar 3": dict(requires=("pogo",), gems=["Green Gem"]),
+    "Gravitational Damping Hub - Bag O' Sugar 4": dict(requires=("pogo",), gems=["Green Gem"]),
+    "Gravitational Damping Hub - Bag O' Sugar 5": dict(requires=("pogo",), gems=["Green Gem"]),
+    "Gravitational Damping Hub - Bag O' Sugar 6": dict(requires=("pogo",), gems=["Green Gem"]),
+    "Gravitational Damping Hub - Bag O' Sugar 7": dict(requires=("pogo",), gems=["Green Gem"]),
+    "Gravitational Damping Hub - Bag O' Sugar 8": dict(requires=("pogo",), gems=["Green Gem"]),
+    "Gravitational Damping Hub - Bag O' Sugar 9": dict(requires=("pogo",), gems=["Green Gem"]),
+    "Gravitational Damping Hub - Bag O' Sugar 10": dict(requires=("pogo",), gems=["Green Gem"]),
+    "Gravitational Damping Hub - Bag O' Sugar 11": dict(requires=("pogo",)),
+    "Gravitational Damping Hub - Bag O' Sugar 12": dict(requires=("pogo",)),
+    "Gravitational Damping Hub - Bag O' Sugar 13": dict(requires=("pogo",)),
+
+    # Quantum Explosion Dynamo: 1–6 deep behind all four gem doors + need
+    # pogo; 7–9 need pogo only. (Region-gated by End Game same as GDH.)
+    "Quantum Explosion Dynamo - Bag O' Sugar 1": dict(requires=("pogo",),
+        gems=["Red Gem", "Yellow Gem", "Blue Gem", "Green Gem"]),
+    "Quantum Explosion Dynamo - Bag O' Sugar 2": dict(requires=("pogo",),
+        gems=["Red Gem", "Yellow Gem", "Blue Gem", "Green Gem"]),
+    "Quantum Explosion Dynamo - Bag O' Sugar 3": dict(requires=("pogo",),
+        gems=["Red Gem", "Yellow Gem", "Blue Gem", "Green Gem"]),
+    "Quantum Explosion Dynamo - Bag O' Sugar 4": dict(requires=("pogo",),
+        gems=["Red Gem", "Yellow Gem", "Blue Gem", "Green Gem"]),
+    "Quantum Explosion Dynamo - Bag O' Sugar 5": dict(requires=("pogo",),
+        gems=["Red Gem", "Yellow Gem", "Blue Gem", "Green Gem"]),
+    "Quantum Explosion Dynamo - Bag O' Sugar 6": dict(requires=("pogo",),
+        gems=["Red Gem", "Yellow Gem", "Blue Gem", "Green Gem"]),
+    "Quantum Explosion Dynamo - Bag O' Sugar 7": dict(requires=("pogo",)),
+    "Quantum Explosion Dynamo - Bag O' Sugar 8": dict(requires=("pogo",)),
+    "Quantum Explosion Dynamo - Bag O' Sugar 9": dict(requires=("pogo",)),
+}
 
 
 ck5_keg_rules = {
@@ -142,7 +230,7 @@ ck5_keg_rules = {
     "Defense Tunnel Burrh - Vitalin Keg 1": dict(requires=("pogo",)),
     "Defense Tunnel Burrh - Vitalin Keg 2": dict(requires=("pogo",)),
     "Defense Tunnel Teln - Vitalin Keg 1": dict(gems=["Red Gem"]),
-    "Brownian Motion Inducer - Vitalin Keg 1": dict(requires=("pogo",)),
+    # Brownian Motion Inducer - Vitalin Keg 1: level access only (no pogo).
     "Gravitational Damping Hub - Vitalin Keg 1": dict(gems=["Green Gem"], requires=("pogo",)),
     "Quantum Explosion Dynamo - Vitalin Keg 1": dict(requires=("pogo", "stunner")),
     "Quantum Explosion Dynamo - Vitalin Keg 2": dict(requires=("pogo", "stunner")),
