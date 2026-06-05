@@ -25,8 +25,11 @@ jobs:
 
       - name: Validate version format
         run: |
-          if ! echo "${{ inputs.version }}" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
-            echo "::error::Version must be in semver format (e.g. 0.0.5)"
+          # Allow an optional prerelease suffix (e.g. 0.0.6-rc.1). A suffixed
+          # version is published as a GitHub prerelease (see "Create release"),
+          # so it stays off releases/latest and is safe to hand out for testing.
+          if ! echo "${{ inputs.version }}" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.]+)?$'; then
+            echo "::error::Version must be semver, optionally with a prerelease suffix (e.g. 0.0.5 or 0.0.6-rc.1)"
             exit 1
           fi
 
@@ -42,7 +45,10 @@ jobs:
         run: |
           # Only commits touching worlds/keen — the rest of the repo is
           # upstream Archipelago and not part of this apworld release.
-          PREV_TAG=$(git describe --tags --abbrev=0 --match='v*' 2>/dev/null || echo "")
+          # Exclude prerelease tags (anything with a hyphen, e.g. v0.0.6-rc.1) so a
+          # final release's changelog spans the whole feature set, not just the
+          # commits since the last RC.
+          PREV_TAG=$(git describe --tags --abbrev=0 --match='v*' --exclude='*-*' 2>/dev/null || echo "")
           if [ -z "$PREV_TAG" ]; then
             LOG=$(git log --pretty=format:"- %s" -- worlds/keen)
           else
@@ -97,6 +103,9 @@ jobs:
         with:
           tag_name: "v${{ inputs.version }}"
           name: "v${{ inputs.version }}"
+          # A version with a prerelease suffix (e.g. 0.0.6-rc.1) is marked as a
+          # prerelease so releases/latest keeps pointing at the last real release.
+          prerelease: ${{ contains(inputs.version, '-') }}
           body: |
             ## Changelog
 
