@@ -175,19 +175,22 @@ ck5_points5k_rules = {
 
     # Brownian Motion Inducer: all 8 bags reachable with level access only.
 
-    # Gravitational Damping Hub: 1–10 behind Green Gem + need pogo; 11–13
-    # need pogo only; 14–15 default. (Whole level is also region-gated by
-    # End Game completion of EFS+RCC+NBI+BMI — no need to repeat here.)
+    # Gravitational Damping Hub: 1–6 behind Green Gem + need pogo; 7–13 need
+    # pogo only; 14–15 default. (Whole level is also region-gated by End Game
+    # completion of EFS+RCC+NBI+BMI — no need to repeat here.) Bags 7–10 sit in
+    # the central area reachable from spawn with zero gems — verified by flood-
+    # filling the static geometry from the Keen spawn (38,65); only 1–6 (top)
+    # are gated by the Green Gem door (tile 30,63).
     "Gravitational Damping Hub - Bag O' Sugar 1": dict(requires=("pogo",), gems=["Green Gem"]),
     "Gravitational Damping Hub - Bag O' Sugar 2": dict(requires=("pogo",), gems=["Green Gem"]),
     "Gravitational Damping Hub - Bag O' Sugar 3": dict(requires=("pogo",), gems=["Green Gem"]),
     "Gravitational Damping Hub - Bag O' Sugar 4": dict(requires=("pogo",), gems=["Green Gem"]),
     "Gravitational Damping Hub - Bag O' Sugar 5": dict(requires=("pogo",), gems=["Green Gem"]),
     "Gravitational Damping Hub - Bag O' Sugar 6": dict(requires=("pogo",), gems=["Green Gem"]),
-    "Gravitational Damping Hub - Bag O' Sugar 7": dict(requires=("pogo",), gems=["Green Gem"]),
-    "Gravitational Damping Hub - Bag O' Sugar 8": dict(requires=("pogo",), gems=["Green Gem"]),
-    "Gravitational Damping Hub - Bag O' Sugar 9": dict(requires=("pogo",), gems=["Green Gem"]),
-    "Gravitational Damping Hub - Bag O' Sugar 10": dict(requires=("pogo",), gems=["Green Gem"]),
+    "Gravitational Damping Hub - Bag O' Sugar 7": dict(requires=("pogo",)),
+    "Gravitational Damping Hub - Bag O' Sugar 8": dict(requires=("pogo",)),
+    "Gravitational Damping Hub - Bag O' Sugar 9": dict(requires=("pogo",)),
+    "Gravitational Damping Hub - Bag O' Sugar 10": dict(requires=("pogo",)),
     "Gravitational Damping Hub - Bag O' Sugar 11": dict(requires=("pogo",)),
     "Gravitational Damping Hub - Bag O' Sugar 12": dict(requires=("pogo",)),
     "Gravitational Damping Hub - Bag O' Sugar 13": dict(requires=("pogo",)),
