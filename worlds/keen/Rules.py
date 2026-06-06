@@ -261,7 +261,7 @@ def create_ck_rules(self):
                           ["Blue Gem"])
         set_location_rule(world, player, "Crystalus - Green Gem", "Crystalus", requires=("pogo",))
         set_location_rule(world, player, "Crystalus - Yellow Gem", "Crystalus",
-                          ["Green Gem"], requires=("pogo",))
+                          requires=("pogo",))
         set_location_rule(world, player, "Crystalus - Red Gem", "Crystalus",
                           ["Yellow Gem"], requires=("pogo",))
         set_location_rule(world, player, "Crystalus - Blue Gem", "Crystalus",
