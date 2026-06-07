@@ -102,8 +102,9 @@ ck4_points5k_rules = {
     "Crystalus - Ice Cream Cone 2": dict(requires=("pogo",)),
     "Crystalus - Ice Cream Cone 3": dict(gems=["Blue Gem"]),
     "Hilville - Ice Cream Cone 1": dict(requires=("pogo",)),
-    # Sand Yego Pickup 1 (engine idx 0, tile 31,45) is in ck4_points5k_excluded
-    # because no in-game route to it was found during the audit.
+    # Sand Yego Pickup 1 (engine idx 0, tile 32,45) floats up-left of the
+    # row-50 platform; reachable via a pogo jump, same as the SY flask.
+    "Sand Yego - Ice Cream Cone 1": dict(requires=("pogo",)),
     "Sand Yego - Ice Cream Cone 3": dict(requires=("pogo",)),
     "Miragia - Ice Cream Cone 1": dict(requires=("pogo",)),
     "Miragia - Ice Cream Cone 2": dict(requires=("pogo",)),

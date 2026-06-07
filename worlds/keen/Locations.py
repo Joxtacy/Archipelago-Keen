@@ -461,10 +461,10 @@ ck5_points5k_counts = {
 # for 5000-pt pickups present in level data but unreachable in normal play.
 # Populate as concrete unreachables are found.
 ck4_points5k_excluded: set[tuple[int, int]] = {
-    # Sand Yego engine idx 0 = tile (31, 45), info-layer. Could not be
-    # located during the manual audit — flagging as excluded until/unless
-    # a route is confirmed. Worst case: a missing check, never a softlock.
-    (LEVEL_SY, 0),
+    # (No CK4 exclusions.) Sand Yego engine idx 0 = tile (32, 45) was previously
+    # excluded as "could not be located", but it was confirmed reachable in
+    # normal play (a pogo jump up-left from the platform at row 50). It now
+    # carries a per-pickup pogo rule like the Sand Yego Lifewater Flask.
 }
 ck5_points5k_excluded: set[tuple[int, int]] = {
     # Security Center engine idx 8 & 9 = tiles (63,14)/(64,14), the upper pair
