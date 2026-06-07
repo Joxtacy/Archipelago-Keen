@@ -1,4 +1,4 @@
-from worlds.generic.Rules import set_rule
+from worlds.generic.Rules import add_rule, set_rule
 
 from .Locations import (
     ck4_flask_locations_by_region, ck5_keg_locations_by_region,
@@ -561,6 +561,39 @@ def create_ck_rules(self):
         _set_score_rules(ck5_points5k_locations_by_region,
                          ck5_level_id_to_name,
                          ck5_points5k_rules)
+
+    # Secret-level entry gates (cross-level prerequisites). A secret level is
+    # only physically reachable by traversing another level, which set_location_rule's
+    # single-level gems= mechanism can't express — so AND the gate onto every
+    # location of each secret level (gems, Complete, cones/flasks/sugar/kegs)
+    # after the per-pickup rules are set.
+    #   POTF: reached only by gathering the inchworms in the Pyramid of the
+    #         Moons, behind its Yellow Gem door (== being able to complete POM).
+    #   Korath: reached only via the hidden teleporter deep in the Gravitational
+    #         Damping Hub, past GDH's green + red doors (same as the GDH Vitalin
+    #         Keg's green-gem+pogo requirement, plus the red gem for the
+    #         teleporter door).
+    def _has_gem(state, level, gem):
+        return (state.has(f"{level} - {gem}", player)
+                or state.has(f"{level} Gemset", player))
+
+    if ep in [0, 1] and self.options.enable_ck4_secret_level:
+        def potf_gate(state):
+            return (state.has("Pyramid of the Moons", player)
+                    and _has_gem(state, "Pyramid of the Moons", "Yellow Gem"))
+        for loc in world.get_locations(player):
+            if loc.name.startswith("Pyramid of the Forbidden"):
+                add_rule(loc, potf_gate)
+
+    if ep in [0, 2] and self.options.enable_ck5_secret_level:
+        def korath_gate(state):
+            return (state.has("Gravitational Damping Hub", player)
+                    and _has_gem(state, "Gravitational Damping Hub", "Green Gem")
+                    and _has_gem(state, "Gravitational Damping Hub", "Red Gem")
+                    and state.has("Pogo Stick", player))
+        for loc in world.get_locations(player):
+            if loc.name.startswith("Korath III Base"):
+                add_rule(loc, korath_gate)
 
     # Victory condition
     if ep == 1:

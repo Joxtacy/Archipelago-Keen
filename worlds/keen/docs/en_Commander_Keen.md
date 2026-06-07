@@ -40,11 +40,17 @@ Each episode has an optional secret level. Both are off by default and toggled
 separately (*Enable Keen 4 Secret Level* / *Enable Keen 5 Secret Level*), and
 neither is required to reach the goal.
 
-* **Pyramid of the Forbidden** (Keen 4): its hidden entrance sits behind the
-  Pyramid of the Moons on the Shadowlands map.
-* **Korath III Base** (Keen 5): reached only through the hidden teleporter
-  inside the Gravitational Damping Hub (the "Impossible Pogo Trick") — you need
-  the pogo stick and neural stunner to get there.
+* **Pyramid of the Forbidden** (Keen 4): its hidden entrance only opens after
+  you gather all the inchworms inside the **Pyramid of the Moons**, behind that
+  level's yellow-gem door. So logic won't expect anything in the Pyramid of the
+  Forbidden until you can also reach the Pyramid of the Moons **and** hold its
+  yellow gem (i.e. you could complete the Pyramid of the Moons).
+* **Korath III Base** (Keen 5): reached only through the hidden teleporter deep
+  inside the **Gravitational Damping Hub** (the "Impossible Pogo Trick"). You
+  need the pogo stick to get there, and the teleporter sits past the Hub's green
+  and red doors — so logic also requires the Gravitational Damping Hub unlock
+  plus its **green** and **red** gems (the same reach as the Hub's Vitalin Keg,
+  plus the red gem for the teleporter door).
 
 When enabled, a secret level adds its own unlock item, keygems (plus a keycard
 for Korath), a level-completion check, and — if the matching sanity option is on
