@@ -101,31 +101,36 @@ def attach_locations(world, region_name):
     if world.options.enable_ck5_secret_level:  # Korath III Base
         locations.update(ck5_secret_locations_by_region.get(region_name, {}))
 
-    # Korath III Base's keg/sugar pickups live in the regular CK5 keg/sugar
-    # dicts (so the apworld counts, the tracker pointsanity generator, and the
-    # drift check all see them), but they're double-gated: only attach when the
-    # CK5 secret level is enabled too. Filter them out otherwise.
-    def _gate_korath(by_region):
+    # Secret-level score pickups (POTF cones/flasks, Korath sugar/kegs) live in
+    # the regular CK4/CK5 keg/flask/sugar/cone dicts (so the apworld counts, the
+    # tracker pointsanity generator, and the drift check all see them), but
+    # they're double-gated: only attach when that secret level is enabled too.
+    def _gate_secret(by_region):
         d = by_region.get(region_name, {})
-        if world.options.enable_ck5_secret_level:
+        drop = []
+        if not world.options.enable_ck4_secret_level:
+            drop.append("Pyramid of the Forbidden")
+        if not world.options.enable_ck5_secret_level:
+            drop.append("Korath III Base")
+        if not drop:
             return d
-        return {n: i for n, i in d.items() if not n.startswith("Korath III Base")}
+        return {n: i for n, i in d.items() if not any(n.startswith(p) for p in drop)}
 
     # Kegsanity = CK5 Vitalin Kegs only (extra-life centilives in CK5).
     if world.options.enable_kegsanity:
-        locations.update(_gate_korath(ck5_keg_locations_by_region))
+        locations.update(_gate_secret(ck5_keg_locations_by_region))
 
     # Flasksanity = CK4 Lifewater Flasks only (extra-life centilives in CK4).
     if world.options.enable_flasksanity:
-        locations.update(ck4_flask_locations_by_region.get(region_name, {}))
+        locations.update(_gate_secret(ck4_flask_locations_by_region))
 
     # Conesanity = CK4 Ice Cream Cones (5000-pt); sugarsanity = CK5 Bag O'
     # Sugar (5000-pt). Engine emits only class=5 checks right now; lower
     # point tiers are wired but disabled engine-side.
     if world.options.enable_conesanity:
-        locations.update(ck4_points5k_locations_by_region.get(region_name, {}))
+        locations.update(_gate_secret(ck4_points5k_locations_by_region))
     if world.options.enable_sugarsanity:
-        locations.update(_gate_korath(ck5_points5k_locations_by_region))
+        locations.update(_gate_secret(ck5_points5k_locations_by_region))
 
     for loc_name, loc_id in locations.items():
         region.locations.append(

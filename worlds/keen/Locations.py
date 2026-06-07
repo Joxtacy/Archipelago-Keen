@@ -300,6 +300,9 @@ ck4_extralife_counts = {
     LEVEL_CRYS: 0, LEVEL_HIL: 1, LEVEL_SY: 1, LEVEL_MIR: 1, LEVEL_LO: 5,
     LEVEL_POTM: 1, LEVEL_POS: 8, LEVEL_POTGA: 4, LEVEL_IOT: 2, LEVEL_IOF: 1,
     LEVEL_WOW: 1, LEVEL_BWBM: 0,
+    # Pyramid of the Forbidden (secret). 2 Lifewater Flasks (engine dump idx
+    # 0-1). Double-gated: flasksanity AND enable_ck4_secret_level.
+    LEVEL_POTF: 2,
 }
 
 ck5_extralife_counts = {
@@ -371,6 +374,7 @@ ck4_level_id_to_name = {
     LEVEL_POTM: "Pyramid of the Moons",
     LEVEL_POS: "Pyramid of Shadows",
     LEVEL_POTGA: "Pyramid of the Gnosticine Ancients",
+    LEVEL_POTF: "Pyramid of the Forbidden",
     LEVEL_IOT: "Isle of Tar",
     LEVEL_IOF: "Isle of Fire",
     LEVEL_WOW: "Well of Wishes",
@@ -403,6 +407,7 @@ ck4_level_id_to_region = {
     LEVEL_MIR: "K4 Overworld", LEVEL_LO: "K4 Overworld",
     LEVEL_POTM: "K4 Overworld", LEVEL_POS: "K4 Overworld",
     LEVEL_POTGA: "K4 Overworld", LEVEL_BWBM: "K4 Overworld",
+    LEVEL_POTF: "K4 Overworld",
     LEVEL_IOT: "K4 Lake", LEVEL_IOF: "K4 Lake", LEVEL_WOW: "K4 Lake",
 }
 
@@ -477,13 +482,9 @@ ck4_points5k_counts = {
     LEVEL_BV: 0,   LEVEL_SV: 3,    LEVEL_PP: 1,    LEVEL_COTD: 11, LEVEL_COC: 7,
     LEVEL_CRYS: 3, LEVEL_HIL: 1,   LEVEL_SY: 4,    LEVEL_MIR: 5,   LEVEL_LO: 0,
     LEVEL_POTM: 6, LEVEL_POS: 1,   LEVEL_POTGA: 1,
-    # Pyramid of the Forbidden is intentionally not wired into the apworld
-    # (no level item, no completion check; see commented-out lines in
-    # Items.py). Its 14 5000-pt pickups exist in the level data but cannot
-    # be exposed as checks until the level itself is added. Engine-side
-    # those pickups will still fire ap_on_pointitem_get → the AP server
-    # will ignore the unknown location IDs.
-    LEVEL_POTF: 0,
+    # Pyramid of the Forbidden (secret). 14 Ice Cream Cones (engine dump idx
+    # 0-13). Double-gated: conesanity AND enable_ck4_secret_level.
+    LEVEL_POTF: 14,
     LEVEL_IOT: 3,  LEVEL_IOF: 5,   LEVEL_WOW: 0,   LEVEL_BWBM: 0,
 }
 
@@ -527,9 +528,9 @@ ck5_points5k_excluded: set[tuple[int, int]] = {
 ck4_points5k_display_index: dict[tuple[int, int], int] = {}
 ck5_points5k_display_index: dict[tuple[int, int], int] = {}
 
-# POTF doesn't appear in the existing level→region map (it's not in the flask
-# locations either because there are zero flasks there) — patch it in for
-# pointsanity so its 5000-pt pickups land in the right region.
+# POTF is now in the base ck4_level_id_to_name / _region maps (it has cones and
+# flasks), so these *_with_potf aliases are equivalent to the base maps. Kept
+# as named aliases for the pointsanity builders/rules that reference them.
 LEVEL_POTF_REGION = "K4 Overworld"
 ck4_level_id_to_region_with_potf = {**ck4_level_id_to_region, LEVEL_POTF: LEVEL_POTF_REGION}
 ck4_level_id_to_name_with_potf = {**ck4_level_id_to_name, LEVEL_POTF: "Pyramid of the Forbidden"}
