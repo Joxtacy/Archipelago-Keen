@@ -266,6 +266,12 @@ ck4_secret_locations_by_region = {
 ck5_secret_locations_by_region = {
     "End Game": {
         "Korath III Base Complete": loc_level_complete(AP_EPISODE_CK5, LEVEL_KORATH),
+        # Two blue gem holders -> two blue items but a single "- Blue Gem" check
+        # (gem pickups are keyed by colour engine-side), as with POTF's reds.
+        "Korath III Base - Yellow Gem": loc_keygem(AP_EPISODE_CK5, LEVEL_KORATH, GEM_YELLOW),
+        "Korath III Base - Blue Gem": loc_keygem(AP_EPISODE_CK5, LEVEL_KORATH, GEM_BLUE),
+        "Korath III Base - Green Gem": loc_keygem(AP_EPISODE_CK5, LEVEL_KORATH, GEM_GREEN),
+        "Korath III Base - Keycard": loc_keycard(AP_EPISODE_CK5, LEVEL_KORATH),
     },
 }
 

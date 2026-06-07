@@ -183,6 +183,24 @@ ck5_secret_level_items = [
     ItemDef("Korath III Base", ItemClassification.progression, 2013),
 ]
 
+# Korath III Base has two blue gem holders (the only CK5 level with two of one
+# colour, mirroring POTF's two reds): both blue items open the two blue doors;
+# the omnispeak-ap client grants a blue count equal to how many are held.
+ck5_secret_gem_items = [
+    ItemDef("Korath III Base - Yellow Gem", ItemClassification.progression, 201301),
+    ItemDef("Korath III Base - Blue Gem 1", ItemClassification.progression, 201302),
+    ItemDef("Korath III Base - Blue Gem 2", ItemClassification.progression, 201312),
+    ItemDef("Korath III Base - Green Gem", ItemClassification.progression, 201303),
+]
+
+ck5_secret_keycard_items = [
+    ItemDef("Korath III Base - Keycard", ItemClassification.progression, 201304),
+]
+
+ck5_secret_gemset_items = [
+    ItemDef("Korath III Base Gemset", ItemClassification.progression, 201399),
+]
+
 # --------------------------------------------------
 # Create master item table
 # --------------------------------------------------
@@ -202,6 +220,9 @@ ck_all_items = (
     + ck4_secret_gem_items
     + ck4_secret_gemset_items
     + ck5_secret_level_items
+    + ck5_secret_gem_items
+    + ck5_secret_keycard_items
+    + ck5_secret_gemset_items
 )
 item_table = {i.name: i.classification for i in ck_all_items}
 item_name_to_id = {i.name: i.code for i in ck_all_items}

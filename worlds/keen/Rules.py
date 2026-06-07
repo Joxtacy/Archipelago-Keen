@@ -452,14 +452,26 @@ def create_ck_rules(self):
                           requires=("pogo",))
         set_location_rule(world, player, "Quantum Explosion Dynamo - Green Gem", "Quantum Explosion Dynamo",
                           requires=("pogo",))
-        # Korath III Base (secret level, opt-in). Reached only via the Impossible
-        # Pogo Trick (pogo + stunner) through the hidden teleporter inside the
-        # Gravitational Damping Hub. It lives in the End Game region, so it
-        # inherits the EFS/RCC/NBI/BMI gating. No gems / keycard. Optional —
-        # not part of the QED goal. Requiring pogo+stunner is the safe
-        # over-approximation (logic can't model the trick's execution skill).
+        # Korath III Base (secret level, opt-in). Reached via the hidden
+        # teleporter inside the Gravitational Damping Hub; it lives in the End
+        # Game region (inherits the EFS/RCC/NBI/BMI gating) and is optional
+        # (not part of the QED goal). It has two blue gem holders, so completion
+        # needs both blue items (Blue Gem 1 + Blue Gem 2; the client grants a
+        # blue count of 2) plus the yellow/green gems and the keycard — the
+        # intended path (the no-gem fuse skip is the Impossible Pogo Trick).
+        # Every Korath check requires pogo+stunner: reaching the level at all
+        # needs the trick, so this is the safe over-approximation for fill.
         if self.options.enable_ck5_secret_level:
             set_location_rule(world, player, "Korath III Base Complete", "Korath III Base",
+                              ["Yellow Gem", "Blue Gem 1", "Blue Gem 2", "Green Gem"],
+                              keycard=True, requires=("pogo", "stunner"))
+            set_location_rule(world, player, "Korath III Base - Yellow Gem", "Korath III Base",
+                              requires=("pogo", "stunner"))
+            set_location_rule(world, player, "Korath III Base - Blue Gem", "Korath III Base",
+                              requires=("pogo", "stunner"))
+            set_location_rule(world, player, "Korath III Base - Green Gem", "Korath III Base",
+                              requires=("pogo", "stunner"))
+            set_location_rule(world, player, "Korath III Base - Keycard", "Korath III Base",
                               requires=("pogo", "stunner"))
 
     # Score-item access rules (kegs + flasks).

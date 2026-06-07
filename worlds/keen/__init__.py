@@ -10,7 +10,8 @@ from .Items import (
     ck4_gem_items, ck4_gemset_items, ck5_level_items, ck5_keycard_items,
     ck5_gem_items, ck5_gemset_items,
     ck4_secret_level_items, ck4_secret_gem_items, ck4_secret_gemset_items,
-    ck5_secret_level_items,
+    ck5_secret_level_items, ck5_secret_gem_items, ck5_secret_keycard_items,
+    ck5_secret_gemset_items,
 )
 from .Locations import location_table
 from .Options import KeenOptions
@@ -190,6 +191,8 @@ class KeenWorld(World):
             pool += ck4_secret_gemset_items if gemsets else ck4_secret_gem_items
         if ep in [0, 2] and self.options.enable_ck5_secret_level:
             pool += ck5_secret_level_items
+            pool += ck5_secret_keycard_items
+            pool += ck5_secret_gemset_items if gemsets else ck5_secret_gem_items
 
         pool = [i for i in pool if i.name not in self.starting_items]
 
