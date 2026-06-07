@@ -66,6 +66,7 @@ LEVEL_DTT = 9
 LEVEL_BMI = 10
 LEVEL_GDH = 11
 LEVEL_QED = 12
+LEVEL_KORATH = 13
 
 # Gem indexes (match engine values)
 GEM_RED = 0
@@ -244,6 +245,30 @@ ck5_locations_by_region = {
     },
 }
 
+# Secret-level locations (gated by the enable_secret_levels option). Kept in
+# their own dicts so Regions.attach_locations only attaches them when the
+# option is on, mirroring the sanity-option dicts below. POTF has two red gem
+# holders but gem pickups are keyed by colour engine-side, so its two red
+# pickups share a single "- Red Gem" check; the two red *items* open the two
+# doors. Korath III Base has no gems/keycard. Both land in the same region as
+# their episode's other levels (POTF on the overworld, Korath in End Game,
+# since it's reached from the Gravitational Damping Hub).
+ck4_secret_locations_by_region = {
+    "K4 Overworld": {
+        "Pyramid of the Forbidden Complete": loc_level_complete(AP_EPISODE_CK4, LEVEL_POTF),
+        "Pyramid of the Forbidden - Red Gem": loc_keygem(AP_EPISODE_CK4, LEVEL_POTF, GEM_RED),
+        "Pyramid of the Forbidden - Yellow Gem": loc_keygem(AP_EPISODE_CK4, LEVEL_POTF, GEM_YELLOW),
+        "Pyramid of the Forbidden - Blue Gem": loc_keygem(AP_EPISODE_CK4, LEVEL_POTF, GEM_BLUE),
+        "Pyramid of the Forbidden - Green Gem": loc_keygem(AP_EPISODE_CK4, LEVEL_POTF, GEM_GREEN),
+    },
+}
+
+ck5_secret_locations_by_region = {
+    "End Game": {
+        "Korath III Base Complete": loc_level_complete(AP_EPISODE_CK5, LEVEL_KORATH),
+    },
+}
+
 # --------------------------------------------------
 # Extra-life pickup locations
 # --------------------------------------------------
@@ -356,6 +381,7 @@ ck5_level_id_to_name = {
     LEVEL_BMI: "Brownian Motion Inducer",
     LEVEL_GDH: "Gravitational Damping Hub",
     LEVEL_QED: "Quantum Explosion Dynamo",
+    LEVEL_KORATH: "Korath III Base",
 }
 
 # Mirrors the regional grouping in ck4_locations_by_region / ck5_locations_by_region
@@ -377,6 +403,7 @@ ck5_level_id_to_region = {
     LEVEL_RCC: "K5 Hub", LEVEL_DTS: "K5 Hub", LEVEL_NBI: "K5 Hub",
     LEVEL_DTT: "K5 Hub", LEVEL_BMI: "K5 Hub",
     LEVEL_GDH: "End Game", LEVEL_QED: "End Game",
+    LEVEL_KORATH: "End Game",
 }
 
 
@@ -556,6 +583,7 @@ location_table = {
     loc_name: loc_id
     for locations in [
         ck4_locations_by_region, ck5_locations_by_region,
+        ck4_secret_locations_by_region, ck5_secret_locations_by_region,
         ck4_flask_locations_by_region, ck5_keg_locations_by_region,
         ck4_points5k_locations_by_region, ck5_points5k_locations_by_region,
     ]

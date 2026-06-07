@@ -42,7 +42,6 @@ ck4_level_items = [
     ItemDef("Pyramid of the Moons", ItemClassification.progression, 1011),
     ItemDef("Pyramid of Shadows", ItemClassification.progression, 1012),
     ItemDef("Pyramid of the Gnosticine Ancients", ItemClassification.progression, 1013),
-    # ItemDef("Pyramid of the Forbidden", ItemClassification.progression, 1014),
     ItemDef("Isle of Tar", ItemClassification.progression, 1015),
     ItemDef("Isle of Fire", ItemClassification.progression, 1016),
     ItemDef("Well of Wishes", ItemClassification.progression, 1017),
@@ -64,11 +63,6 @@ ck4_gem_items = [
     ItemDef("Pyramid of Shadows - Blue Gem", ItemClassification.progression, 101202),
     ItemDef("Pyramid of the Gnosticine Ancients - Red Gem", ItemClassification.progression, 101300),
     ItemDef("Pyramid of the Gnosticine Ancients - Green Gem", ItemClassification.progression, 101303),
-    # ItemDef("Pyramid of the Forbidden - Red Gem 1", ItemClassification.progression, 101400),
-    # ItemDef("Pyramid of the Forbidden - Red Gem 2", ItemClassification.progression, 101410),
-    # ItemDef("Pyramid of the Forbidden - Yellow Gem", ItemClassification.progression, 101401),
-    # ItemDef("Pyramid of the Forbidden - Blue Gem", ItemClassification.progression, 101402),
-    # ItemDef("Pyramid of the Forbidden - Green Gem", ItemClassification.progression, 101403),
     ItemDef("Isle of Tar - Red Gem", ItemClassification.progression, 101500),
     ItemDef("Isle of Tar - Yellow Gem", ItemClassification.progression, 101501),
     ItemDef("Isle of Tar - Blue Gem", ItemClassification.progression, 101502),
@@ -85,7 +79,6 @@ ck4_gemset_items = [
     ItemDef("Pyramid of the Moons Gemset", ItemClassification.progression, 101199),
     ItemDef("Pyramid of Shadows Gemset", ItemClassification.progression, 101299),
     ItemDef("Pyramid of the Gnosticine Ancients Gemset", ItemClassification.progression, 101399),
-    # ItemDef("Pyramid of the Forbidden", ItemClassification.progression, 101499),
     ItemDef("Isle of Tar Gemset", ItemClassification.progression, 101599),
     ItemDef("Isle of Fire Gemset", ItemClassification.progression, 101699),
 ]
@@ -162,6 +155,35 @@ ck5_gemset_items = [
 ]
 
 # --------------------------------------------------
+# Secret levels (gated by the enable_secret_levels option)
+# --------------------------------------------------
+# Pyramid of the Forbidden (CK4) and Korath III Base (CK5). Kept in separate
+# lists so create_items only adds them when the option is on. POTF is the only
+# level with two red gem holders, so it has two distinct red items (Red Gem 1 /
+# Red Gem 2) — both are needed to open both red doors; the omnispeak-ap client
+# grants a red count equal to how many are held. Korath has no gems/keycard.
+
+ck4_secret_level_items = [
+    ItemDef("Pyramid of the Forbidden", ItemClassification.progression, 1014),
+]
+
+ck4_secret_gem_items = [
+    ItemDef("Pyramid of the Forbidden - Red Gem 1", ItemClassification.progression, 101400),
+    ItemDef("Pyramid of the Forbidden - Red Gem 2", ItemClassification.progression, 101410),
+    ItemDef("Pyramid of the Forbidden - Yellow Gem", ItemClassification.progression, 101401),
+    ItemDef("Pyramid of the Forbidden - Blue Gem", ItemClassification.progression, 101402),
+    ItemDef("Pyramid of the Forbidden - Green Gem", ItemClassification.progression, 101403),
+]
+
+ck4_secret_gemset_items = [
+    ItemDef("Pyramid of the Forbidden Gemset", ItemClassification.progression, 101499),
+]
+
+ck5_secret_level_items = [
+    ItemDef("Korath III Base", ItemClassification.progression, 2013),
+]
+
+# --------------------------------------------------
 # Create master item table
 # --------------------------------------------------
 
@@ -176,6 +198,10 @@ ck_all_items = (
     + ck5_gem_items
     + ck5_keycard_items
     + ck5_gemset_items
+    + ck4_secret_level_items
+    + ck4_secret_gem_items
+    + ck4_secret_gemset_items
+    + ck5_secret_level_items
 )
 item_table = {i.name: i.classification for i in ck_all_items}
 item_name_to_id = {i.name: i.code for i in ck_all_items}

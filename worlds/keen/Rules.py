@@ -304,6 +304,27 @@ def create_ck_rules(self):
                           "Pyramid of the Gnosticine Ancients")
         set_location_rule(world, player, "Pyramid of the Gnosticine Ancients - Green Gem",
                           "Pyramid of the Gnosticine Ancients", requires=("pogo",))
+        # Pyramid of the Forbidden (secret level, opt-in). It has TWO red gem
+        # holders, so completion needs both red items (Red Gem 1 + Red Gem 2);
+        # the omnispeak-ap client grants a red count of 2 when both are held
+        # (or via the gemset). The two physical red pickups share a single
+        # "- Red Gem" check (gem pickups are keyed by colour engine-side).
+        # Requirements are conservative (all gem doors + pogo) pending an
+        # exact level-map / in-engine reachability audit; over-requiring is
+        # logic-safe and POTF is optional (not part of the BWBM goal).
+        if self.options.enable_ck4_secret_level:
+            set_location_rule(world, player, "Pyramid of the Forbidden Complete",
+                              "Pyramid of the Forbidden",
+                              ["Red Gem 1", "Red Gem 2", "Yellow Gem", "Blue Gem", "Green Gem"],
+                              requires=("pogo",))
+            set_location_rule(world, player, "Pyramid of the Forbidden - Red Gem",
+                              "Pyramid of the Forbidden", requires=("pogo",))
+            set_location_rule(world, player, "Pyramid of the Forbidden - Yellow Gem",
+                              "Pyramid of the Forbidden", requires=("pogo",))
+            set_location_rule(world, player, "Pyramid of the Forbidden - Blue Gem",
+                              "Pyramid of the Forbidden", requires=("pogo",))
+            set_location_rule(world, player, "Pyramid of the Forbidden - Green Gem",
+                              "Pyramid of the Forbidden", requires=("pogo",))
         # The exit is reachable by pogoing across the top without the Blue Gem
         # door, so pogo alone (no gem) completes the level (playtest audit).
         set_location_rule(world, player, "Isle of Tar Complete", "Isle of Tar",
@@ -431,6 +452,15 @@ def create_ck_rules(self):
                           requires=("pogo",))
         set_location_rule(world, player, "Quantum Explosion Dynamo - Green Gem", "Quantum Explosion Dynamo",
                           requires=("pogo",))
+        # Korath III Base (secret level, opt-in). Reached only via the Impossible
+        # Pogo Trick (pogo + stunner) through the hidden teleporter inside the
+        # Gravitational Damping Hub. It lives in the End Game region, so it
+        # inherits the EFS/RCC/NBI/BMI gating. No gems / keycard. Optional —
+        # not part of the QED goal. Requiring pogo+stunner is the safe
+        # over-approximation (logic can't model the trick's execution skill).
+        if self.options.enable_ck5_secret_level:
+            set_location_rule(world, player, "Korath III Base Complete", "Korath III Base",
+                              requires=("pogo", "stunner"))
 
     # Score-item access rules (kegs + flasks).
     # Default rule: player must be able to enter the level. Per-pickup

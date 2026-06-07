@@ -1,6 +1,7 @@
 from BaseClasses import Region
 from .Locations import (
     ck4_locations_by_region, ck5_locations_by_region,
+    ck4_secret_locations_by_region, ck5_secret_locations_by_region,
     ck4_flask_locations_by_region, ck5_keg_locations_by_region,
     ck4_points5k_locations_by_region, ck5_points5k_locations_by_region,
     KeenLocation,
@@ -93,6 +94,12 @@ def attach_locations(world, region_name):
     locations = {}
     locations.update(ck4_locations_by_region.get(region_name, {}))
     locations.update(ck5_locations_by_region.get(region_name, {}))
+
+    # Secret levels are opt-in, one toggle each.
+    if world.options.enable_ck4_secret_level:  # Pyramid of the Forbidden
+        locations.update(ck4_secret_locations_by_region.get(region_name, {}))
+    if world.options.enable_ck5_secret_level:  # Korath III Base
+        locations.update(ck5_secret_locations_by_region.get(region_name, {}))
 
     # Kegsanity = CK5 Vitalin Kegs only (extra-life centilives in CK5).
     if world.options.enable_kegsanity:

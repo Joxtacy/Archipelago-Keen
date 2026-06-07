@@ -26,6 +26,36 @@ class EnableGemsets(Toggle):
 
     default = 1
 
+class EnableCK4SecretLevel(Toggle):
+    """
+    Whether the Keen 4 secret level, the Pyramid of the Forbidden, is included.
+    With this option on, it becomes an unlockable level with its own location
+    checks and unlock items. It is optional — not required for the Keen 4
+    (BWB Megarocket) goal.
+
+    It is harder to reach than the regular levels: its hidden entrance sits
+    behind the Pyramid of the Moons. Only applies when Keen 4 is in the seed.
+    Off by default.
+    """
+    display_name = "Enable Keen 4 Secret Level"
+
+    default = 0
+
+class EnableCK5SecretLevel(Toggle):
+    """
+    Whether the Keen 5 secret level, Korath III Base, is included.
+    With this option on, it becomes an unlockable level with its own location
+    check and unlock item. It is optional — not required for the Keen 5
+    (QED) goal.
+
+    It is harder to reach than the regular levels: it is only reached via the
+    Impossible Pogo Trick (pogo + stunner) inside the Gravitational Damping
+    Hub. Only applies when Keen 5 is in the seed. Off by default.
+    """
+    display_name = "Enable Keen 5 Secret Level"
+
+    default = 0
+
 class AdditionalStartingLevels(Range):
     """
     How many additional levels should be randomly unlocked at the start of the game.
@@ -136,6 +166,8 @@ class RandomizeWetsuit(Choice):
 class KeenOptions(PerGameCommonOptions):
     episode_select: EpisodeSelect
     enable_gemsets: EnableGemsets
+    enable_ck4_secret_level: EnableCK4SecretLevel
+    enable_ck5_secret_level: EnableCK5SecretLevel
     additional_starting_levels: AdditionalStartingLevels
     enable_conesanity: EnableConesanity
     enable_sugarsanity: EnableSugarsanity

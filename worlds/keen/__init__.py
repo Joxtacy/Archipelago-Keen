@@ -8,7 +8,9 @@ from .Items import (
     KeenItem, item_name_to_id, create_item as keen_create_item,
     ck_common_items, ck4_level_items, ck4_unique_items,
     ck4_gem_items, ck4_gemset_items, ck5_level_items, ck5_keycard_items,
-    ck5_gem_items, ck5_gemset_items
+    ck5_gem_items, ck5_gemset_items,
+    ck4_secret_level_items, ck4_secret_gem_items, ck4_secret_gemset_items,
+    ck5_secret_level_items,
 )
 from .Locations import location_table
 from .Options import KeenOptions
@@ -181,6 +183,14 @@ class KeenWorld(World):
             pool += ck5_keycard_items
             pool += ck5_gemset_items if gemsets else ck5_gem_items
 
+        # Secret levels (opt-in, one toggle each). POTF has two distinct red
+        # gem items in no-gemset mode; both are needed to open its two red doors.
+        if ep in [0, 1] and self.options.enable_ck4_secret_level:
+            pool += ck4_secret_level_items
+            pool += ck4_secret_gemset_items if gemsets else ck4_secret_gem_items
+        if ep in [0, 2] and self.options.enable_ck5_secret_level:
+            pool += ck5_secret_level_items
+
         pool = [i for i in pool if i.name not in self.starting_items]
 
         for item_def in pool:
@@ -212,6 +222,8 @@ class KeenWorld(World):
         return {
             "episode_select": self.options.episode_select.value,
             "enable_gemsets": self.options.enable_gemsets.value,
+            "enable_ck4_secret_level": self.options.enable_ck4_secret_level.value,
+            "enable_ck5_secret_level": self.options.enable_ck5_secret_level.value,
             "enable_conesanity": self.options.enable_conesanity.value,
             "enable_sugarsanity": self.options.enable_sugarsanity.value,
             "enable_flasksanity": self.options.enable_flasksanity.value,
