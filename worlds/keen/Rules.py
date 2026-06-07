@@ -251,17 +251,33 @@ ck5_keg_rules = {
     "Quantum Explosion Dynamo - Vitalin Keg 2": dict(requires=("pogo", "stunner")),
 }
 
-# Korath III Base (secret) score-item rules. Reaching any pickup needs the
-# Impossible-Pogo-Trick access (pogo + stunner); these only apply when the CK5
-# secret level is enabled (the locations are absent otherwise — see Regions).
-ck5_keg_rules.update({
-    f"Korath III Base - Vitalin Keg {i + 1}": dict(requires=("pogo", "stunner"))
-    for i in range(2)
+# Secret-level (POTF / Korath) score-item rules from the in-game playtest audit
+# (docs/secret_{potf,korath}_worksheet.md). Only applied when the level is
+# enabled (the locations are absent otherwise — see Regions / the `present`
+# guard in _set_score_rules). "Red Gem"/"Blue Gem" need both same-colour items.
+
+# POTF cones: 1-10 are deep behind red+yellow+blue doors; 11-14 behind red+yellow.
+ck4_points5k_rules.update({
+    f"Pyramid of the Forbidden - Ice Cream Cone {i}":
+        dict(gems=["Red Gem 1", "Red Gem 2", "Yellow Gem", "Blue Gem"], requires=("pogo", "stunner"))
+    for i in range(1, 11)
 })
+ck4_points5k_rules.update({
+    f"Pyramid of the Forbidden - Ice Cream Cone {i}":
+        dict(gems=["Red Gem 1", "Red Gem 2", "Yellow Gem"], requires=("pogo", "stunner"))
+    for i in range(11, 15)
+})
+# POTF flasks: Flask 1 default (level only); Flask 2 needs stunner.
+ck4_flask_rules["Pyramid of the Forbidden - Lifewater Flask 2"] = dict(requires=("stunner",))
+
+# Korath sugar: all reachable with pogo (no stunner / gems).
 ck5_points5k_rules.update({
-    f"Korath III Base - Bag O' Sugar {i + 1}": dict(requires=("pogo", "stunner"))
+    f"Korath III Base - Bag O' Sugar {i + 1}": dict(requires=("pogo",))
     for i in range(20)
 })
+# Korath kegs: Keg 1 behind the green door, Keg 2 behind the yellow door.
+ck5_keg_rules["Korath III Base - Vitalin Keg 1"] = dict(gems=["Green Gem"], requires=("pogo",))
+ck5_keg_rules["Korath III Base - Vitalin Keg 2"] = dict(gems=["Yellow Gem"], requires=("pogo",))
 
 
 def create_ck_rules(self):
@@ -324,19 +340,25 @@ def create_ck_rules(self):
         # Requirements are conservative (all gem doors + pogo) pending an
         # exact level-map / in-engine reachability audit; over-requiring is
         # logic-safe and POTF is optional (not part of the BWBM goal).
+        # Per-pickup requirements from the in-game playtest audit (see
+        # docs/secret_potf_worksheet.md). "Red Gem" needs both red items since
+        # POTF has two red doors. Complete does not need the green door.
         if self.options.enable_ck4_secret_level:
             set_location_rule(world, player, "Pyramid of the Forbidden Complete",
                               "Pyramid of the Forbidden",
-                              ["Red Gem 1", "Red Gem 2", "Yellow Gem", "Blue Gem", "Green Gem"],
-                              requires=("pogo",))
+                              ["Red Gem 1", "Red Gem 2", "Yellow Gem", "Blue Gem"],
+                              requires=("pogo", "stunner"))
             set_location_rule(world, player, "Pyramid of the Forbidden - Red Gem",
-                              "Pyramid of the Forbidden", requires=("pogo",))
+                              "Pyramid of the Forbidden", requires=("stunner",))
             set_location_rule(world, player, "Pyramid of the Forbidden - Yellow Gem",
-                              "Pyramid of the Forbidden", requires=("pogo",))
+                              "Pyramid of the Forbidden",
+                              ["Red Gem 1", "Red Gem 2"], requires=("stunner",))
             set_location_rule(world, player, "Pyramid of the Forbidden - Blue Gem",
-                              "Pyramid of the Forbidden", requires=("pogo",))
+                              "Pyramid of the Forbidden",
+                              ["Red Gem 1", "Red Gem 2", "Yellow Gem"], requires=("pogo", "stunner"))
             set_location_rule(world, player, "Pyramid of the Forbidden - Green Gem",
-                              "Pyramid of the Forbidden", requires=("pogo",))
+                              "Pyramid of the Forbidden",
+                              ["Red Gem 1", "Red Gem 2", "Yellow Gem"], requires=("pogo", "stunner"))
         # The exit is reachable by pogoing across the top without the Blue Gem
         # door, so pogo alone (no gem) completes the level (playtest audit).
         set_location_rule(world, player, "Isle of Tar Complete", "Isle of Tar",
@@ -473,18 +495,22 @@ def create_ck_rules(self):
         # intended path (the no-gem fuse skip is the Impossible Pogo Trick).
         # Every Korath check requires pogo+stunner: reaching the level at all
         # needs the trick, so this is the safe over-approximation for fill.
+        # Per-pickup requirements from the in-game playtest audit (see
+        # docs/secret_korath_worksheet.md). Reaching the level needs pogo (not
+        # stunner); the secret fuse-skip is the only thing needing stunner+pogo
+        # together. "Blue Gem" (for the keycard) needs both blue items (two blue
+        # doors). Complete is just the green door + pogo.
         if self.options.enable_ck5_secret_level:
             set_location_rule(world, player, "Korath III Base Complete", "Korath III Base",
-                              ["Yellow Gem", "Blue Gem 1", "Blue Gem 2", "Green Gem"],
-                              keycard=True, requires=("pogo", "stunner"))
+                              ["Green Gem"], requires=("pogo",))
             set_location_rule(world, player, "Korath III Base - Yellow Gem", "Korath III Base",
-                              requires=("pogo", "stunner"))
+                              requires=("pogo",))
             set_location_rule(world, player, "Korath III Base - Blue Gem", "Korath III Base",
                               requires=("pogo", "stunner"))
             set_location_rule(world, player, "Korath III Base - Green Gem", "Korath III Base",
-                              requires=("pogo", "stunner"))
+                              ["Yellow Gem"], requires=("pogo", "stunner"))
             set_location_rule(world, player, "Korath III Base - Keycard", "Korath III Base",
-                              requires=("pogo", "stunner"))
+                              ["Blue Gem 1", "Blue Gem 2"], requires=("pogo", "stunner"))
 
     # Score-item access rules (kegs + flasks).
     # Default rule: player must be able to enter the level. Per-pickup
