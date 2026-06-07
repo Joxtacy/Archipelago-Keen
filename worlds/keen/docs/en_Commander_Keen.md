@@ -26,10 +26,39 @@ In episode 5, the goal is to finish the canonical final level, "Quantum Explosio
 * Episode Select: Play episode 4, 5, or both! Episode 6 is not supported.
 * Enable Gemsets: You can opt to receive all keygems for a level at once instead of individually. This reduces the number of times you have to enter a level.
 * Additional Starting Levels: You will always start with Border Village and Slug Village in episode 4 and Ion Ventilation System and Security Center in episode 4. You can select to start with 3 to 10 additional levels chosen at random.
-* Enable Pointsanity: Once implemented, whether to play with pointsanity checks or not.
+* Enable Conesanity: Turns every reachable Ice Cream Cone (Keen 4 5000-point pickup) into its own AP location.
+* Enable Sugarsanity: Turns every reachable Bag O' Sugar (Keen 5 5000-point pickup) into its own AP location.
 * Enable Flasksanity: Turns every reachable Lifewater Flask (Keen 4 extra-life pickup) into its own AP location. Unreachable flasks are excluded automatically.
 * Enable Kegsanity: Turns every Vitalin Keg (Keen 5 extra-life pickup) into its own AP location.
+* Enable Keen 4 Secret Level: Adds the Pyramid of the Forbidden as an optional level (see "Secret levels" below). Off by default.
+* Enable Keen 5 Secret Level: Adds Korath III Base as an optional level (see "Secret levels" below). Off by default.
 * Randomize Stunner/Pogo/Wetsuit: For each item you can select whether to start with it, have it placed early in the seed, or to completely randomize it.
+
+## Secret levels
+
+Each episode has an optional secret level. Both are off by default and toggled
+separately (*Enable Keen 4 Secret Level* / *Enable Keen 5 Secret Level*), and
+neither is required to reach the goal.
+
+* **Pyramid of the Forbidden** (Keen 4): its hidden entrance sits behind the
+  Pyramid of the Moons on the Shadowlands map.
+* **Korath III Base** (Keen 5): reached only through the hidden teleporter
+  inside the Gravitational Damping Hub (the "Impossible Pogo Trick") — you need
+  the pogo stick and neural stunner to get there.
+
+When enabled, a secret level adds its own unlock item, keygems (plus a keycard
+for Korath), a level-completion check, and — if the matching sanity option is on
+— its cones/flasks (Keen 4) or sugar/kegs (Keen 5).
+
+### Two gems of one colour
+
+The Pyramid of the Forbidden has **two red gems and two red doors**, and Korath
+III Base has **two blue gems and two blue doors** — the only levels with two
+gems of a single colour. Because the game reports a gem pickup only by its
+colour, the two same-coloured gems share a **single** "Red Gem" / "Blue Gem"
+location check: picking up either one completes that check, so on a tracker both
+gem pins will light up at once. You still receive **two** separate gem items,
+and you need **both** to open both doors and finish the level.
 
 ## What changes have been made from the vanilla game?
 * You will be unable to enter a level until the level unlock item is received from the multiworld.
