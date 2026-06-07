@@ -251,6 +251,18 @@ ck5_keg_rules = {
     "Quantum Explosion Dynamo - Vitalin Keg 2": dict(requires=("pogo", "stunner")),
 }
 
+# Korath III Base (secret) score-item rules. Reaching any pickup needs the
+# Impossible-Pogo-Trick access (pogo + stunner); these only apply when the CK5
+# secret level is enabled (the locations are absent otherwise — see Regions).
+ck5_keg_rules.update({
+    f"Korath III Base - Vitalin Keg {i + 1}": dict(requires=("pogo", "stunner"))
+    for i in range(2)
+})
+ck5_points5k_rules.update({
+    f"Korath III Base - Bag O' Sugar {i + 1}": dict(requires=("pogo", "stunner"))
+    for i in range(20)
+})
+
 
 def create_ck_rules(self):
     
@@ -480,8 +492,14 @@ def create_ck_rules(self):
     # merged in by location name.
     def _set_score_rules(locations_by_region, level_to_name, overrides=None):
         overrides = overrides or {}
+        # Some score locations in these dicts may not be attached this seed
+        # (e.g. Korath III Base's keg/sugar when the CK5 secret level is off but
+        # kegsanity/sugarsanity is on). Only rule locations that actually exist.
+        present = {loc.name for loc in world.get_locations(player)}
         for region_dict in locations_by_region.values():
             for loc_name in region_dict:
+                if loc_name not in present:
+                    continue
                 # Location names are "<Level Name> - Keg N" / "Flask N".
                 # Derive level by matching against the level→name map.
                 level_name = None

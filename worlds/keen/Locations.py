@@ -306,6 +306,9 @@ ck5_extralife_counts = {
     LEVEL_IVS: 10, LEVEL_SC: 2, LEVEL_DTV: 2, LEVEL_EFS: 1, LEVEL_DTB: 2,
     LEVEL_RCC: 0, LEVEL_DTS: 0, LEVEL_NBI: 0, LEVEL_DTT: 1, LEVEL_BMI: 1,
     LEVEL_GDH: 1, LEVEL_QED: 2,
+    # Korath III Base (secret). Its keg/sugar locations are double-gated:
+    # kegsanity/sugarsanity AND enable_ck5_secret_level (see Regions/Rules).
+    LEVEL_KORATH: 2,
 }
 
 # (level_id, scan_index) tuples for CK4 Lifewater Flasks that exist in the
@@ -488,6 +491,9 @@ ck5_points5k_counts = {
     LEVEL_IVS: 0,  LEVEL_SC: 28,  LEVEL_DTV: 7,  LEVEL_EFS: 10, LEVEL_DTB: 4,
     LEVEL_RCC: 0,  LEVEL_DTS: 13, LEVEL_NBI: 4,  LEVEL_DTT: 10, LEVEL_BMI: 8,
     LEVEL_GDH: 15, LEVEL_QED: 9,
+    # Korath III Base (secret). 20 Bags O' Sugar (engine dump idx 0-19).
+    # Double-gated: sugarsanity AND enable_ck5_secret_level.
+    LEVEL_KORATH: 20,
 }
 
 # Same shape as ck4_lifewater_flask_excluded: (level_id, engine_idx) tuples
