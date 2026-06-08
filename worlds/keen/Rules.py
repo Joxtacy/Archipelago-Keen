@@ -267,7 +267,10 @@ ck4_points5k_rules.update({
         dict(gems=["Red Gem 1", "Red Gem 2", "Yellow Gem"], requires=("pogo", "stunner"))
     for i in range(11, 15)
 })
-# POTF flasks: Flask 1 default (level only); Flask 2 needs stunner.
+# POTF flasks: Flask 1 sits behind the same red+yellow+blue doors as cones 1-10
+# (needs pogo + stunner + all four gems); Flask 2 needs stunner.
+ck4_flask_rules["Pyramid of the Forbidden - Lifewater Flask 1"] = dict(
+    gems=["Red Gem 1", "Red Gem 2", "Yellow Gem", "Blue Gem"], requires=("pogo", "stunner"))
 ck4_flask_rules["Pyramid of the Forbidden - Lifewater Flask 2"] = dict(requires=("stunner",))
 
 # Korath sugar: all reachable with pogo (no stunner / gems).
@@ -548,10 +551,9 @@ def create_ck_rules(self):
                          ck5_keg_rules)
 
     # Conesanity = CK4 Ice Cream Cones; sugarsanity = CK5 Bag O' Sugar.
-    # Both are 5000-pt pickups (engine class 5). PoTF has no flasks so it's
-    # missing from ck4_level_id_to_name — use the _with_potf variant so its
-    # pickups (none active currently, but the helper allows for them) get
-    # rules attached.
+    # Both are 5000-pt pickups (engine class 5). The _with_potf map is used so
+    # POTF's cone pickups resolve a level name; it is currently equivalent to
+    # ck4_level_id_to_name, which already includes POTF.
     if ep in [0, 1] and self.options.enable_conesanity:
         _set_score_rules(ck4_points5k_locations_by_region,
                          ck4_level_id_to_name_with_potf,

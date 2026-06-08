@@ -42,9 +42,9 @@ Should be: red gem + yellow gem + blue gem + pogo + stunner
 | 13  | ( 7, 47)    | dump   | red gem, yellow gem, pogo, stunner           |
 | 14  | ( 8, 47)    | dump   | red gem, yellow gem, pogo, stunner           |
 
-## Lifewater Flasks (2) (current rule: default / level only)
+## Lifewater Flasks (2)
 
-| #   | Tile (X, Y) | Source | Requires |
-| --- | ----------- | ------ | -------- |
-| 1   | ( 58, 21)   | dump   | default  |
-| 2   | ( 43, 15)   | dump   | stunner  |
+| #   | Tile (X, Y) | Source | Requires                                     |
+| --- | ----------- | ------ | -------------------------------------------- |
+| 1   | ( 58, 21)   | dump   | red gem, yellow gem, blue gem, pogo, stunner |
+| 2   | ( 43, 15)   | dump   | stunner                                      |
