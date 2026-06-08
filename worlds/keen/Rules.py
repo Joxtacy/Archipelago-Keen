@@ -25,7 +25,12 @@ _REQUIREMENT_ITEM = {
 def set_location_rule(world, player, location_name, level_name,
                       gems=None,
                       requires=(),
-                      keycard=False):
+                      keycard=False,
+                      gem_alt=()):
+    # gem_alt: requirement tokens (same vocabulary / '|' OR syntax as `requires`)
+    # that are an *alternative* to the gem requirement rather than an additional
+    # AND. Use when a level has an exit that bypasses the gem door — e.g. the
+    # Pyramid of the Moons over-the-top route reached with pogo and no Yellow Gem.
 
     def rule(state):
         if not state.has(level_name, player):
@@ -38,7 +43,13 @@ def set_location_rule(world, player, location_name, level_name,
             return False
         if gems:
             has_all_gems = all(state.has(f"{level_name} - {gem}", player) for gem in gems)
-            return has_all_gems or state.has(f"{level_name} Gemset", player)
+            satisfied = has_all_gems or state.has(f"{level_name} Gemset", player)
+            for req in gem_alt:
+                options = req.split("|")
+                if any(state.has(_REQUIREMENT_ITEM[o], player) for o in options):
+                    satisfied = True
+                    break
+            return satisfied
         return True
 
     set_rule(world.get_location(location_name, player), rule)
@@ -277,8 +288,10 @@ def create_ck_rules(self):
         set_location_rule(world, player, "Miragia Complete", "Miragia", requires=("pogo",))
         set_location_rule(world, player, "Lifewater Oasis Complete", "Lifewater Oasis", ["Green Gem"])
         set_location_rule(world, player, "Lifewater Oasis - Green Gem", "Lifewater Oasis")
+        # Three exits: the Yellow Gem door, the secret exit (also Yellow), and an
+        # over-the-top route reached with pogo and no Yellow Gem (gem_alt=pogo).
         set_location_rule(world, player, "Pyramid of the Moons Complete", "Pyramid of the Moons",
-                          ["Yellow Gem"])
+                          ["Yellow Gem"], gem_alt=("pogo",))
         set_location_rule(world, player, "Pyramid of the Moons - Yellow Gem", "Pyramid of the Moons")
         set_location_rule(world, player, "Pyramid of Shadows Complete", "Pyramid of Shadows",
                           ["Blue Gem"], requires=("stunner",))
