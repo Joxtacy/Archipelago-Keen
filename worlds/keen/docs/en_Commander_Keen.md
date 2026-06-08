@@ -30,8 +30,8 @@ In episode 5, the goal is to finish the canonical final level, "Quantum Explosio
 * Enable Sugarsanity: Turns every reachable Bag O' Sugar (Keen 5 5000-point pickup) into its own AP location.
 * Enable Flasksanity: Turns every reachable Lifewater Flask (Keen 4 extra-life pickup) into its own AP location. Unreachable flasks are excluded automatically.
 * Enable Kegsanity: Turns every Vitalin Keg (Keen 5 extra-life pickup) into its own AP location.
-* Enable Keen 4 Secret Level: Adds the Pyramid of the Forbidden as an optional level (see "Secret levels" below). Off by default.
-* Enable Keen 5 Secret Level: Adds Korath III Base as an optional level (see "Secret levels" below). Off by default.
+* Enable Keen 4 Secret Level: Adds the Pyramid of the Forbidden as an optional level (see [Secret levels](#secret-levels) below). Off by default.
+* Enable Keen 5 Secret Level: Adds Korath III Base as an optional level (see [Secret levels](#secret-levels) below). Off by default.
 * Randomize Stunner/Pogo/Wetsuit: For each item you can select whether to start with it, have it placed early in the seed, or to completely randomize it.
 
 ## Secret levels
@@ -66,9 +66,28 @@ location check: picking up either one completes that check, so on a tracker both
 gem pins will light up at once. You still receive **two** separate gem items,
 and you need **both** to open both doors and finish the level.
 
+### Don't worry about getting stranded
+
+The Pyramid of the Forbidden sits in a sealed pocket of the Shadowlands map
+(vanilla flies you in once you've gathered the inchworms in the Pyramid of the
+Moons). If you visit it before you have what you need to finish it, you might
+worry about being trapped there — you can't walk back out, and pressing CTRL+R
+inside the level just drops you at the entrance in that same pocket.
+
+You can always get out: **pressing CTRL+R while standing on the overworld map
+returns Keen to the level's starting position** (the same spot a new game
+starts you at). So the escape is to step back onto the secret-level entrance,
+CTRL+R out into the pocket, then CTRL+R once more on the map to warp back to the
+start. This works on any map, so a secret level can never strand you.
+
+(Inside a level, CTRL+R still returns you to wherever you entered from — so you
+can freely leave and re-enter a level you're working on.)
+
 ## What changes have been made from the vanilla game?
 * You will be unable to enter a level until the level unlock item is received from the multiworld.
-* You can exit a level early by pressing CTRL+R.
+* You can exit a level early by pressing CTRL+R. Pressing CTRL+R while on the
+  overworld map instead returns you to the map's starting position, so you can
+  never get stranded (see [Don't worry about getting stranded](#dont-worry-about-getting-stranded) above).
 * You can replay completed levels.
 * Rescuing all council members in episode 4 no longer triggers the end of the game.
 * Gates on the overworld have been removed. For example:
