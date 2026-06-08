@@ -85,7 +85,7 @@ ck4_flask_rules = {
     "Pyramid of the Gnosticine Ancients - Lifewater Flask 3": dict(requires=("stunner",)),
     "Pyramid of the Gnosticine Ancients - Lifewater Flask 4": dict(requires=("pogo",)),
     "Isle of Tar - Lifewater Flask 1": dict(requires=("pogo",)),
-    "Isle of Tar - Lifewater Flask 2": dict(requires=("pogo",), gems=["Blue Gem"]),
+    "Isle of Tar - Lifewater Flask 2": dict(requires=("pogo",)),
 }
 
 
