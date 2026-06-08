@@ -284,7 +284,8 @@ def create_ck_rules(self):
         set_location_rule(world, player, "Hilville Complete", "Hilville")
         set_location_rule(world, player, "Sand Yego Complete", "Sand Yego",
                           ["Green Gem"], requires=("pogo",))
-        set_location_rule(world, player, "Sand Yego - Green Gem", "Sand Yego", requires=("pogo",))
+        # The Green Gem holder is reachable without pogo (playtest audit).
+        set_location_rule(world, player, "Sand Yego - Green Gem", "Sand Yego")
         set_location_rule(world, player, "Miragia Complete", "Miragia", requires=("pogo",))
         set_location_rule(world, player, "Lifewater Oasis Complete", "Lifewater Oasis", ["Green Gem"])
         set_location_rule(world, player, "Lifewater Oasis - Green Gem", "Lifewater Oasis")
@@ -303,11 +304,16 @@ def create_ck_rules(self):
                           "Pyramid of the Gnosticine Ancients")
         set_location_rule(world, player, "Pyramid of the Gnosticine Ancients - Green Gem",
                           "Pyramid of the Gnosticine Ancients", requires=("pogo",))
+        # The exit is reachable by pogoing across the top without the Blue Gem
+        # door, so pogo alone (no gem) completes the level (playtest audit).
         set_location_rule(world, player, "Isle of Tar Complete", "Isle of Tar",
-                          ["Blue Gem"], requires=("pogo",))
+                          requires=("pogo",))
         set_location_rule(world, player, "Isle of Tar - Red Gem", "Isle of Tar", requires=("pogo",))
         set_location_rule(world, player, "Isle of Tar - Yellow Gem", "Isle of Tar", ["Red Gem"])
-        set_location_rule(world, player, "Isle of Tar - Blue Gem", "Isle of Tar", ["Yellow Gem"])
+        # Pogo can reach the Blue Gem holder over the top, bypassing the Yellow
+        # Gem door (gem_alt=pogo), same as the POTM over-the-top route.
+        set_location_rule(world, player, "Isle of Tar - Blue Gem", "Isle of Tar",
+                          ["Yellow Gem"], gem_alt=("pogo",))
         set_location_rule(world, player, "Isle of Fire Complete", "Isle of Fire",
                           ["Yellow Gem", "Blue Gem"])
         set_location_rule(world, player, "Isle of Fire - Yellow Gem", "Isle of Fire")
