@@ -16,6 +16,25 @@ class EpisodeSelect(Choice):
 
     default = option_both
 
+class CK4Goal(Choice):
+    """
+    The Keen 4 victory condition.
+    megarocket = Complete the Bean-With-Bacon Megarocket. This transitively
+        requires reaching every regular Keen 4 level (the classic goal).
+    council_rescue = Rescue all 8 members of the Council of the Gnosticene
+        Ancients, i.e. complete the 8 levels that contain a council member
+        (The Perilous Pit, Cave of the Descendents, Crystalus, Lifewater Oasis,
+        Pyramid of Shadows, Pyramid of the Gnosticine Ancients, Isle of Fire,
+        Well of Wishes). The Bean-With-Bacon Megarocket is not required.
+    Only applies when Keen 4 is in the seed.
+    """
+    display_name = "Keen 4 Goal"
+
+    option_megarocket = 0
+    option_council_rescue = 1
+
+    default = option_megarocket
+
 class EnableGemsets(Toggle):
     """
     Whether gemsets should be enabled in the seed.
@@ -165,6 +184,7 @@ class RandomizeWetsuit(Choice):
 @dataclass
 class KeenOptions(PerGameCommonOptions):
     episode_select: EpisodeSelect
+    ck4_goal: CK4Goal
     enable_gemsets: EnableGemsets
     enable_ck4_secret_level: EnableCK4SecretLevel
     enable_ck5_secret_level: EnableCK5SecretLevel

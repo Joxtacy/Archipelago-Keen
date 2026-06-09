@@ -24,6 +24,21 @@ from .Rules import create_ck_rules
 # checks in test/webhost/ fail.
 from BaseClasses import Tutorial
 
+# The 8 Keen 4 levels that contain a rescuable council member (derived from
+# GAMEMAPS.CK4 info-plane spawns; the Pyramid of the Forbidden's "council
+# member" is the Janitor and does not count). Completing all 8 is the
+# council_rescue goal. See Options.CK4Goal.
+COUNCIL_LEVEL_COMPLETE = (
+    "The Perilous Pit Complete",
+    "Cave of the Descendents Complete",
+    "Crystalus Complete",
+    "Lifewater Oasis Complete",
+    "Pyramid of Shadows Complete",
+    "Pyramid of the Gnosticine Ancients Complete",
+    "Isle of Fire Complete",
+    "Well of Wishes Complete",
+)
+
 
 class KeenWeb(WebWorld):
     theme = "jungle"
@@ -71,12 +86,19 @@ class KeenWorld(World):
 
         if ep in [0, 1]:
             bwbm = self.multiworld.get_location("Bean-With-Bacon Megarocket Complete", self.player)
-            bwbm_event = Location(self.player, "Keen 4 Victory", None, bwbm.parent_region)
-            bwbm_event.place_locked_item(
+            k4_event = Location(self.player, "Keen 4 Victory", None, bwbm.parent_region)
+            k4_event.place_locked_item(
                 Item("Keen 4 Complete", ItemClassification.progression, None, self.player))
-            bwbm.parent_region.locations.append(bwbm_event)
-            set_rule(bwbm_event, lambda state:
-                     state.can_reach("Bean-With-Bacon Megarocket Complete", "Location", self.player))
+            bwbm.parent_region.locations.append(k4_event)
+            if self.options.ck4_goal.value == self.options.ck4_goal.option_council_rescue:
+                # Rescue all 8 council members: complete the 8 levels that
+                # contain a council member. The Megarocket is not required.
+                set_rule(k4_event, lambda state:
+                         all(state.can_reach(loc, "Location", self.player)
+                             for loc in COUNCIL_LEVEL_COMPLETE))
+            else:
+                set_rule(k4_event, lambda state:
+                         state.can_reach("Bean-With-Bacon Megarocket Complete", "Location", self.player))
         
         if ep in [0, 2]:
             qed = self.multiworld.get_location("Quantum Explosion Dynamo Complete", self.player)
@@ -224,6 +246,7 @@ class KeenWorld(World):
     def fill_slot_data(self) -> dict:
         return {
             "episode_select": self.options.episode_select.value,
+            "ck4_goal": self.options.ck4_goal.value,
             "enable_gemsets": self.options.enable_gemsets.value,
             "enable_ck4_secret_level": self.options.enable_ck4_secret_level.value,
             "enable_ck5_secret_level": self.options.enable_ck5_secret_level.value,
