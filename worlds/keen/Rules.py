@@ -502,10 +502,11 @@ def create_ck_rules(self):
         # docs/secret_korath_worksheet.md). Reaching the level needs pogo (not
         # stunner); the secret fuse-skip is the only thing needing stunner+pogo
         # together. "Blue Gem" (for the keycard) needs both blue items (two blue
-        # doors). Complete is just the green door + pogo.
+        # doors). Complete needs the green door + pogo and the keycard (the exit
+        # is gated behind the keycard door, same as Security Center / DTV).
         if self.options.enable_ck5_secret_level:
             set_location_rule(world, player, "Korath III Base Complete", "Korath III Base",
-                              ["Green Gem"], requires=("pogo",))
+                              ["Green Gem"], requires=("pogo",), keycard=True)
             set_location_rule(world, player, "Korath III Base - Yellow Gem", "Korath III Base",
                               requires=("pogo",))
             set_location_rule(world, player, "Korath III Base - Blue Gem", "Korath III Base",
