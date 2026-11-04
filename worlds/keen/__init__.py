@@ -211,6 +211,8 @@ class KeenWorld(World):
     def fill_slot_data(self) -> dict:
         return {
             "episode_select": self.options.episode_select.value,
+            "difficulty_select": self.options.difficulty_select.value,
+            "stunner_logic_select": self.options.stunner_logic_select.value,
             "enable_gemsets": self.options.enable_gemsets.value,
             "enable_conesanity": self.options.enable_conesanity.value,
             "enable_sugarsanity": self.options.enable_sugarsanity.value,

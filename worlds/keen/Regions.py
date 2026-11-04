@@ -30,6 +30,8 @@ def create_ck4_regions(world):
 def create_ck5_regions(world):
     mw = world.multiworld
     player = world.player
+    difficulty = world.options.difficulty_select.value
+    stunner_logic = world.options.stunner_logic_select.value
 
     menu = mw.get_region("Menu", player)
 
@@ -45,20 +47,15 @@ def create_ck5_regions(world):
     k5_hub.connect(k5_end, "End Game", lambda state:
         (state.has("Energy Flow Systems", player) and
             (
-                (
-                    state.has("Energy Flow Systems - Red Gem", player) and
-                    state.has("Energy Flow Systems - Yellow Gem", player) and
-                    state.has("Energy Flow Systems - Blue Gem", player) and
-                    state.has("Energy Flow Systems - Green Gem", player)
-                ) or
+                state.has("Energy Flow Systems - Green Gem", player)
+                or
                 state.has("Energy Flow Systems Gemset", player)
             )) and
         (state.has("Regulation Control Center", player) and
             (
                 (
                     state.has("Regulation Control Center - Red Gem", player) and
-                    state.has("Regulation Control Center - Yellow Gem", player) and
-                    state.has("Regulation Control Center - Blue Gem", player)
+                    state.has("Regulation Control Center - Yellow Gem", player)
                 ) or
                 state.has("Regulation Control Center Gemset", player)
             )
@@ -80,7 +77,9 @@ def create_ck5_regions(world):
                 ) or
                 state.has("Brownian Motion Inducer Gemset", player)
             )
-        ))
+        ) and
+        (state.has("Neural Stunner", player) or (stunner_logic == 1 and difficulty < 2)) and
+        state.has("Pogo Stick", player))
     
     for region_name in ck5_locations_by_region:
         attach_locations(world, region_name)

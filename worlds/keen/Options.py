@@ -16,6 +16,34 @@ class EpisodeSelect(Choice):
 
     default = option_both
 
+class DifficultySelect(Choice):
+    """
+    Which difficulty setting to use for the logic.
+    You can choose to play on a difficulty other that the one
+    selected here, but some checks may become out of logic.
+    """
+    display_name = "Difficulty"
+
+    option_easy = 0
+    option_normal = 1
+    option_hard = 2
+
+    default = option_easy
+
+class StunnerLogicSelect(Choice):
+    """
+    Whether the neural stunner is required in logic for checks that are possible but difficult without it.
+    difficult = Logic will require stunner for checks that are difficult without it
+    impossible = Logic will only require stunner for checks that are impossible without it
+
+    """
+    display_name = "Stunner Logic"
+
+    option_difficult = 0
+    option_impossible = 1
+
+    default = option_difficult
+
 class EnableGemsets(Toggle):
     """
     Whether gemsets should be enabled in the seed.
@@ -135,6 +163,8 @@ class RandomizeWetsuit(Choice):
 @dataclass
 class KeenOptions(PerGameCommonOptions):
     episode_select: EpisodeSelect
+    difficulty_select: DifficultySelect
+    stunner_logic_select: StunnerLogicSelect
     enable_gemsets: EnableGemsets
     additional_starting_levels: AdditionalStartingLevels
     enable_conesanity: EnableConesanity
